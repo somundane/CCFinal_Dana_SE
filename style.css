@@ -1,0 +1,16 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    font-family: monospace;
+    font-size: 12px;
+    text-align: center;
+    
+}
+canvas {
+ 
+}
+h2 {
+    font-weight: normal;
+}
+
