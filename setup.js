@@ -1,15 +1,24 @@
-let video, handpose;
-let predictions = [];
+var handposeModel = null;
+var videoDataLoaded = false;
+var statusText = "Loading handpose model...";
+var predictions = [];
+var capture;
+
+handpose.load().then(function(_model){
+  console.log("model initialized.")
+  statusText = "Model loaded."
+  handposeModel = _model;
+})
+
 function setupHand() {
-    video = createCapture(VIDEO);
-    video.size(width, height);
-    video.hide();
-    handpose = ml5.handpose(video, modelReady);
+    capture = createCapture(VIDEO);
+    capture.elt.onloadeddata = function(){
+        console.log("video initialized");
+        videoDataLoaded = true;
+    }
+    capture.hide();
 }
-let done = false;
-function modelReady() {
-  console.log("Model ready!");
-}
+
 
 
 

@@ -3,28 +3,31 @@ let spark = ['y', 'n']
 function setup() {
     setupHand();
     setupSpeech();
-    frameRate(30);
+    setupObjects();
     createCanvas(800, 600);
-    textAlign(CENTER);
+    textAlign(LEFT);
     
     
     //Star Setup
-  for (let j = 0; j < 200; j++) {
-    let star = {
-      x: random(width/2 - 250, width/2 + 250),
-      y: random(0, 1100),
-      size: random(1, 5),
-      spark: random(spark)
-    }
-    stars.push(star);
-  }
+      for (let j = 0; j < 200; j++) {
+        let star = {
+          x: random(width/2 - 250, width/2 + 250),
+          y: random(0, 1100),
+          size: random(1, 5),
+          spark: random(spark)
+        }
+        stars.push(star);
+      }
 }
 
 //Intro
 let city, wind;
+let gif;
 function preload() {
-  city = loadImage('visuals/intro/city.png');
-  wind = loadImage('visuals/intro/window.png');
+    gif = createImg("https://media.giphy.com/media/3o7bu3XilJ5BOiSGic/source.gif");
+    gif.hide();
+    city = loadImage('visuals/intro/city.png');
+    wind = loadImage('visuals/intro/window.png');
 }
 
 let move = false;
@@ -33,39 +36,146 @@ let y = 0;
 let x = 0;
 let textfade = 255;
 let pose = false;
+let s = 30
+let done = false;
+let landed = false;
 function draw() { 
     background(220);
-    textFont('Inconsolata');
+    //initial load
+    //!
+//    if (handposeModel && videoDataLoaded && done == false){
+//        handposeModel.estimateHands(capture.elt).then(function(_hands){
+//      
+//            predictions = _hands;
+//        })
+//        done = true;
+//        print('runs')
+//   }
+//  
+//    if(done == false) {
+//        gif.show();
+//        background(0)
+//        gif.position(width/2-gif.width/2, height/2-gif.height/2);
+//        fill(255)
+//        textSize(30);
+//        text('Loading. . .', width/2, height/2);
+//    }
+//    else {
+//        gif.hide();
+//    }
+
+    //!
+//    if (handposeModel && videoDataLoaded && done == true){
+        sceneIntro();
+        
+  //}
+   
+//update
+  if(pose == true) {
+      handposeModel.estimateHands(capture.elt).then(function(_hands){
+        predictions = _hands;
+          //Math.round(predictions[0].handInViewConfidence*1000)/1000;
+        })
+        drawKeypoints();
+  }
+}
+function cursor() {
+    //find middle of palm
+    //grow circle
+}
+function infoBox(x, y, w, h, r, c, pos, p) {
+    push();
+    fill(0, 160)
+    rect(0, 0, width, height)
+    pop();
+    fill(c)
+    rect(x, y, w, h, r)
+    //i
+    push();
+    noFill();
+    strokeWeight(2)
+    stroke(0)
+    ellipse(x+30, y+30, 25)
+    pop();
+    push();
+    fill(0);
+    textSize(20)
+    textFont('Courgette');
+    text("i", x+28, y+37)
+    pop();
+    
+    push();
+    fill(0);
+    textSize(20)
+    textAlign(LEFT);
+    textFont('Space Mono');
+    text("Speech Recognition", x+58, y+37)
+    pop();
+    //arrow
+    if(pos == "down") {
+        beginShape();
+        vertex(x+w*p, y + h + 20);
+        vertex(x+w*p - 20, y + h);
+        vertex(x+w*p + 20, y + h);
+        endShape(CLOSE);
+    }
+    if(pos == "right") {
+        
+    }
+}
+function dialogueBox() {
+    fill(0)
+    rect(0, height * 0.82, width, height * 0.2)
+}
+function sceneIntro() {
     fill(0)
     text('p5.js', width/2, height/2);
-    
+        
+    landing();
     if(move == true && y > -1100) {
-        y -=20;
+        y -=2;
         x = random(-1, 1)
         textfade -=10;
     }
     //-1100
     image(city, x, y)
     makeStars(x);
-    
     //add ligtinhg effects?
     image(wind, 0, 0)
     
     push();
     fill(255, textfade);
     textSize(30);
+    textAlign(CENTER)
     text('Space Espionage', width/2, height/2);
     pop();
     
-    if(pose == true) {
-        handpose.on("predict", results => {
-        predictions = results;
-        });
-        drawKeypoints();
-    }
-
+    infoBox(width * 0.1, height * 0.43, 300, 200, 8, color(240), "down", 0.2);
+    dialogueBox();
+    
 }
+function fadeText(text, s, x, y) {
+    if(s == "out") {
+        fill(255, textfade);
+        text(text, x, y);
+    }
+    else {
+        fill(0, textfade);
+        text(text, x, y);
+    }
+    
+}
+function landing() {
+    if(y > -1100) {
 
+    }
+    else {
+        return true;
+    }
+}
+function setupObjects() {
+    
+}
 function drawKeypoints() {
   for (let i = 0; i < predictions.length; i += 1) {
     const prediction = predictions[i];
@@ -73,7 +183,9 @@ function drawKeypoints() {
       const keypoint = prediction.landmarks[j];
       fill(0, 255, 0);
       noStroke();
-      ellipse(width-keypoint[0], keypoint[1], 10, 10);
+      let x = map(keypoint[0], 0, capture.width, 0, 800)
+      let y = map(keypoint[1], 0, capture.height, 0, 600)
+      ellipse(width-x, y, 10, 10);
     }
   }
   
@@ -83,13 +195,21 @@ function drawKeypoints() {
       const keypoint2 = prediction2.landmarks[q];
       fill(0, 0, 255);
       noStroke();
-      ellipse(width-keypoint2[0], keypoint2[1], 10, 10);
+      let x = map(keypoint2[0], 0, capture.width, 0, 800)
+      let y = map(keypoint2[1], 0, capture.height, 0, 600)
+      ellipse(width-x, y, 10, 10);
     }
   }
     predictions = []
 }
 
 function mousePressed() {
+//    if(move == true) {
+//        if(pose == false)
+//            pose = true;
+//        else 
+//            pose = false;
+//    }
     move = true;
 }
 
@@ -104,7 +224,7 @@ function makeStars(x) {
       ellipse(star.x, star.y, star.size)
       
       if(move == true) {
-          star.y -=20;
+          star.y -=2;
           star.x += x;
       }
   }
