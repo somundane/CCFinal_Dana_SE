@@ -1,12 +1,13 @@
 let stars = []
 let spark = ['y', 'n']
+let scene;
 function setup() {
-    setupHand();
     setupSpeech();
+    //!
+    //setupHand();
     setupObjects();
     createCanvas(800, 600);
     textAlign(LEFT);
-    
     
     //Star Setup
       for (let j = 0; j < 200; j++) {
@@ -18,16 +19,14 @@ function setup() {
         }
         stars.push(star);
       }
-}
-
-//Intro
-let city, wind;
-let gif;
-function preload() {
-    gif = createImg("https://media.giphy.com/media/3o7bu3XilJ5BOiSGic/source.gif");
-    gif.hide();
-    city = loadImage('visuals/intro/city.png');
-    wind = loadImage('visuals/intro/window.png');
+    for(let i = 0; i < dText.length; i ++) {
+        let t = {
+            text: dText[i],
+            show: false
+        }
+        dialogue.push(t)
+    }
+    scene = new Scene();
 }
 
 let move = false;
@@ -37,22 +36,26 @@ let x = 0;
 let textfade = 255;
 let pose = false;
 let s = 30
-let done = false;
-let landed = false;
+let poseinit = false;
 function draw() { 
     background(220);
-    //initial load
+    print(speak)
+    if(canspeak == true && speak == true) {
+        print(response);
+    }
+    
+    //initial loadModel
     //!
-//    if (handposeModel && videoDataLoaded && done == false){
+//    if (handposeModel && videoDataLoaded && poseinit == false){
 //        handposeModel.estimateHands(capture.elt).then(function(_hands){
 //      
 //            predictions = _hands;
 //        })
-//        done = true;
+//        poseinit = true;
 //        print('runs')
 //   }
 //  
-//    if(done == false) {
+//    if(poseinit == false) {
 //        gif.show();
 //        background(0)
 //        gif.position(width/2-gif.width/2, height/2-gif.height/2);
@@ -65,94 +68,211 @@ function draw() {
 //    }
 
     //!
-//    if (handposeModel && videoDataLoaded && done == true){
-        sceneIntro();
-        
-  //}
-   
-//update
-  if(pose == true) {
-      handposeModel.estimateHands(capture.elt).then(function(_hands){
-        predictions = _hands;
-          //Math.round(predictions[0].handInViewConfidence*1000)/1000;
-        })
-        drawKeypoints();
-  }
+//    if (handposeModel && videoDataLoaded && poseinit == true){
+        if(scene.scene == 0) 
+            sceneIntro()
+//        
+//    }
+}
+class Scene {
+    //!
+    constructor() {
+        this.scene = 0;
+        //!
+        this.subscene = 3;
+        this.nsub = false;
+        this.nscene = false;
+        this.nscene = false;
+    }
+    nextscene() {
+        if(this.nscene == false) {
+            this.scene += 1;
+            this.nscene = true;
+        }
+    }
+    nextsub() {
+        if(this.nsub == false) {
+            this.subscene += 1;
+            this.nsub = true;
+        }
+    }
 }
 function cursor() {
     //find middle of palm
     //grow circle
 }
-function infoBox(x, y, w, h, r, c, pos, p) {
-    push();
-    fill(0, 160)
-    rect(0, 0, width, height)
-    pop();
-    fill(c)
-    rect(x, y, w, h, r)
-    //i
-    push();
-    noFill();
-    strokeWeight(2)
-    stroke(0)
-    ellipse(x+30, y+30, 25)
-    pop();
-    push();
-    fill(0);
-    textSize(20)
-    textFont('Courgette');
-    text("i", x+28, y+37)
-    pop();
-    
-    push();
-    fill(0);
-    textSize(20)
-    textAlign(LEFT);
-    textFont('Space Mono');
-    text("Speech Recognition", x+58, y+37)
-    pop();
-    //arrow
-    if(pos == "down") {
-        beginShape();
-        vertex(x+w*p, y + h + 20);
-        vertex(x+w*p - 20, y + h);
-        vertex(x+w*p + 20, y + h);
-        endShape(CLOSE);
-    }
-    if(pos == "right") {
-        
-    }
-}
-function dialogueBox() {
-    fill(0)
-    rect(0, height * 0.82, width, height * 0.2)
-}
+let fade;
 function sceneIntro() {
-    fill(0)
-    text('p5.js', width/2, height/2);
+    if(scene.subscene >= 0 && scene.subscene < 2) {
+        fill(0)
+        text('p5.js', width/2, height/2);
+
+        if(move == true && y > -1100) {
+            //!
+            y -=100;
+            x = random(-1, 1)
+            textfade -=10;
+        }
+        //-1100
+        image(city, x, y)
+        makeStars(x);
+        //add ligtinhg effects?
+        image(wind, 0, 0)
+        if(scene.subscene == 0 && y <= -1100) {
+            scene.nsub == false;
+            fade = new Fade();
+            scene.nextsub();
+        }
+        push();
+        fill(255, textfade);
+        textSize(30);
+        textAlign(CENTER)
+        text('Space Espionage', width/2, height/2);
+        pop();
         
-    landing();
-    if(move == true && y > -1100) {
-        y -=2;
-        x = random(-1, 1)
-        textfade -=10;
+        if(scene.subscene == 1) {
+            if(fade.state == "out")
+                fade.fadeIn(20);
+            infoBox(info[0], "Speech recognition", width * 0.03, height * 0.43, 300, 200, 8, "down", 0.13, fade.start);
+            dialogueTrue(0, 0);
+            dialogueBox(fade.start);
+            activateIcon("speech", fade.start);
+            if(speak == true) {
+                if(response == "where am I") {
+                    if(fade.state == "in")
+                        fade.fadeOut(10);
+                    if(fade.start < 0) {
+                        scene.nsub = false;
+                        scene.nextsub();
+                        fade = new Fade();
+                    }
+                }
+            } 
+        }
     }
-    //-1100
-    image(city, x, y)
-    makeStars(x);
-    //add ligtinhg effects?
-    image(wind, 0, 0)
-    
-    push();
-    fill(255, textfade);
-    textSize(30);
-    textAlign(CENTER)
-    text('Space Espionage', width/2, height/2);
-    pop();
-    
-    infoBox(width * 0.1, height * 0.43, 300, 200, 8, color(240), "down", 0.2);
-    dialogueBox();
-    
+    if(scene.subscene == 2) {
+        image(city, 0, -1100)
+        image(wind, 0, 0)
+        fade.fadeIn(10);
+        push();
+        tint(255, fade.start)
+        image(plane, 0, 0)
+        image(scan, 0, 0)
+        pop();
+        
+        //please scan
+        //popup
+        if(fade.state == "in"){
+            pose = true;
+        }
+          if(pose == true) {
+              handposeModel.estimateHands(capture.elt).then(function(_hands){
+                predictions = _hands;
+                  //Math.round(predictions[0].handInViewConfidence*1000)/1000;
+                })
+                drawPhone();
+//              drawKeypoints();
+          }
+    }
+    //phone
+    if(scene.subscene == 3) {
+        image(plane, 0, 0)
+        image(scan, 0, 0)
+        fade.fadeIn(10);
+        push()
+        rectMode(CENTER)
+        fill(0, fade.start - 40)
+        rect(width/2, height/2, width, height)
+        fill(255)
+        rect(width/2 + 8, height/2 - 10, 278, 470, 10)
+        tint(255, fade.start)
+        image(phone, 0, 0)
+        pop()
+    }
+}
+let scanhit, hashit = false, time;
+function drawPhone() {
+  for (let i = 0; i < predictions.length; i += 1) {
+    const prediction = predictions[i];
+
+        const keypoint = prediction.landmarks[10];
+        fill(255, 150, 0);
+        noStroke();
+        let x = map(keypoint[0], 0, capture.width, 0, 800)
+        let y = map(keypoint[1], 0, capture.height, 0, 600)
+        //ellipse(width-x, y, 30)
+        
+        push();
+        var scale = 0.5;
+        imageMode(CENTER)
+      image(phone, width-x, y, scale*width, scale*phone.height*width/phone.width)
+//        push()
+//        rectMode(CORNER)
+//        fill(255)
+//        rect(220, 15, 40, 40)
+//        rect(width-x-40, y-90, 80, 180)
+//        pop()
+        pop();
+      
+      
+      scanhit = collideRectRect(220, 15, 40, 40, width-x-40, y-90, 80, 180);
+      
+      if(scanhit) {
+          print('HIT')
+        if(hashit == false) {
+          time = millis();
+          hashit = true;
+        }
+        if(millis() - time < 2000) {
+          let s = map(millis()-time, 0, 2000, 0, 40)
+          push()
+          fill(255)
+          ellipse(width-x, y + 15,s)
+          pop()
+        }
+        if(millis() - time > 2000) {
+            ellipse(width-x, y,40)
+            scene.nsub = false;
+            scene.nextsub();
+            fade = new Fade();
+        }
+      }
+      else{
+          hashit = false;
+      }
+      
+        predictions = [];
+  }
+}
+
+
+class Fade {
+    constructor() {
+        this.start = 0;
+        this.end = 255;
+        this.state = "out";
+    }
+    fadeIn(val) {
+        if(this.start < this.end)
+            this.start += val;
+        else
+            this.state = "in"
+    }
+    fadeOut(val) {
+            this.start -= val;
+    }
+    fadedIn() {
+        if(this.start >= 255)
+            return true;
+        else
+            return false;
+    }
+    fadedOut() {
+        if(this.start <= 0)
+            return true;
+        else
+            return false;
+    }
 }
 function fadeText(text, s, x, y) {
     if(s == "out") {
@@ -165,14 +285,7 @@ function fadeText(text, s, x, y) {
     }
     
 }
-function landing() {
-    if(y > -1100) {
 
-    }
-    else {
-        return true;
-    }
-}
 function setupObjects() {
     
 }
@@ -200,7 +313,7 @@ function drawKeypoints() {
       ellipse(width-x, y, 10, 10);
     }
   }
-    predictions = []
+    predictions = [];
 }
 
 function mousePressed() {
@@ -210,6 +323,7 @@ function mousePressed() {
 //        else 
 //            pose = false;
 //    }
+if(handposeModel && videoDataLoaded && poseinit == true)
     move = true;
 }
 
@@ -224,7 +338,8 @@ function makeStars(x) {
       ellipse(star.x, star.y, star.size)
       
       if(move == true) {
-          star.y -=2;
+          //!
+          star.y -=100;
           star.x += x;
       }
   }
@@ -265,3 +380,15 @@ class Text {
     }
   }
 }
+
+//class InfoText{
+//    constructor(str) {
+//        this.shown = false;
+//        this.text = str;
+//        this.length = str.length;
+//        this.count = 0;
+//        this.ms = ms;
+//        this.x = x;
+//        this.y = y;
+//    }
+//}
