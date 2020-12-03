@@ -1,4 +1,7 @@
-let dText = ["> Where am I?", "> Goodbye"];
+
+
+
+let dText = ["","> Where am I?", "Please process your arrival data. By scanning the code. \n\nWe will be opening doors shortly."];
 let dialogue = [];
 //show dialogue box
 function dialogueBox(fade) {
@@ -31,6 +34,9 @@ function dialogueTrue(start, end) {
             if(i == start) {
                 dialogue[i].show = true;
             }
+            else {
+                dialogue[i].show = false;
+            }
         }
     }
     else {
@@ -46,14 +52,20 @@ function dialogueTrue(start, end) {
 }
 
 let info = [
-    "Whenever the speech symbol is\nactive, you can advance through \nscenes by using speech commands.\nSome of these interactions will be \nguided, like this one!\n\nSay the phrase to try it out!"
+    "Whenever the speech symbol is\nactive, you can advance through \nscenes by using speech commands.\nSome of these interactions will be \nguided, like this one!\n\nSay the phrase to try it out!",
+    "Whenever the hand symbol is\nactive, you can use your hadns \nto interact with a scene.\n\n\nBring your hand up to the \ncamera to try it out!"
+    
 ];
-function infoBox(info, t, x, y, w, h, r, pos, p, fade) {
-    let f = map(fade, 0, 255, 0, 160)
-    push();
-    fill(0, f)
-    rect(0, 0, width, height)
-    pop();
+function infoBox(info, t, x, y, w, h, r, pos, p, fade, bg) {
+    noStroke();
+    //bg
+    if(bg == true) {
+        let f = map(fade, 0, 255, 0, 160)
+        push();
+        fill(0, f)
+        rect(0, 0, width, height)
+        pop();
+    }
     
     //box
     push();
@@ -107,7 +119,7 @@ function infoBox(info, t, x, y, w, h, r, pos, p, fade) {
     
 }
 
-let canspeak = false, canmove;
+let canspeak = false, canpose = false;
 function activateIcon(icon, fade) {
     if(icon == "speech") {
         push()
@@ -118,6 +130,12 @@ function activateIcon(icon, fade) {
         canspeak = true;
     }
     if(icon == "hand") {
+        push()
+        scale(0.40);
+        tint(250, fade)
+        image(hand, 40, 1050);
+        pop();
+        canpose = true
         
     }
 

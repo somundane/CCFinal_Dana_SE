@@ -138,8 +138,8 @@ function sceneIntro() {
         if(scene.subscene == 1) {
             if(fade.state == "out")
                 fade.fadeIn(20);
-            infoBox(info[0], "Speech recognition", width * 0.03, height * 0.43, 300, 200, 8, "down", 0.13, fade.start);
-            dialogueTrue(0, 0);
+            infoBox(info[0], "Speech recognition", width * 0.03, height * 0.43, 300, 200, 8, "down", 0.13, fade.start, true);
+            dialogueTrue(1, 1);
             dialogueBox(fade.start);
             activateIcon("speech", fade.start);
             if(speak == true) {
@@ -164,23 +164,40 @@ function sceneIntro() {
         image(plane, 0, 0)
         image(scan, 0, 0)
         pop();
-        
-        //please scan
-        //popup
-        if(fade.state == "in"){
-            pose = true;
+        if(fade.state == "in" && scene.subscene == 2) {
+            scene.nsub = false;
+            scene.nextsub();
+            fade = new Fade();
+            print('this runs')
         }
-          if(pose == true) {
-              handposeModel.estimateHands(capture.elt).then(function(_hands){
+    }
+        if(scene.subscene == 3) {
+            image(plane, 0, 0)
+            image(scan, 0, 0)
+                fade.fadeIn(10);
+                infoBox(info[1], "Gesture Control", width * 0.03, height * 0.43, 300, 200, 8, "down", 0.13, fade.start, false);
+                dialogueTrue(2, 2);
+                dialogueBox(fade.start);
+                activateIcon("hand", fade.start);
+                
+                //please scan
+                //popup
+                if(fade.state == "in"){
+                    pose = true;
+                }
+                if(pose == true) {
+
+                    handposeModel.estimateHands(capture.elt).then(function(_hands){
                 predictions = _hands;
                   //Math.round(predictions[0].handInViewConfidence*1000)/1000;
                 })
-                drawPhone();
-//              drawKeypoints();
-          }
-    }
+                    drawPhone();
+//                  drawKeypoints();
+                }
+
+        }
     //phone
-    if(scene.subscene == 3) {
+    if(scene.subscene == 4) {
         textFont('Poppins')
         textSize(15);
         image(plane, 0, 0)
