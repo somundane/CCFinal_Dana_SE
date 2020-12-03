@@ -1,6 +1,6 @@
 //Intro
 let mouse, mic, hand;
-let city, wind, phone, plane, scan;
+let city, wind, phone, plane, scan, phone2;
 let gif;
 function preload() {
     gif = createImg("https://media.giphy.com/media/3o7bu3XilJ5BOiSGic/source.gif");
@@ -8,6 +8,7 @@ function preload() {
     city = loadImage('visuals/intro/city.png');
     wind = loadImage('visuals/intro/window.png');
     phone = loadImage('visuals/intro/phone.png');
+    phone2 = loadImage('visuals/intro/phonescreen.png');
     plane = loadImage('visuals/intro/plane.png');
     scan = loadImage('visuals/intro/scan.png');
     

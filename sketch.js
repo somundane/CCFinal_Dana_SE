@@ -1,6 +1,8 @@
 let stars = []
 let spark = ['y', 'n']
-let scene;
+let scene; //ll around scene obj
+let fade; //all around fade obj
+let t; //general text obj
 function setup() {
     setupSpeech();
     //!
@@ -27,6 +29,8 @@ function setup() {
         dialogue.push(t)
     }
     scene = new Scene();
+    fade = new Fade();
+    t = new Text("", width/2-80, height/2-40, 15)
 }
 
 let move = false;
@@ -101,7 +105,6 @@ function cursor() {
     //find middle of palm
     //grow circle
 }
-let fade;
 function sceneIntro() {
     if(scene.subscene >= 0 && scene.subscene < 2) {
         fill(0)
@@ -176,20 +179,37 @@ function sceneIntro() {
     }
     //phone
     if(scene.subscene == 3) {
+        textFont('Poppins')
+        textSize(15);
         image(plane, 0, 0)
         image(scan, 0, 0)
         fade.fadeIn(10);
+        
         push()
         rectMode(CENTER)
-        fill(0, fade.start - 40)
+        let f = map(fade.start, 0, 255, 0, 200)
+        fill(0, f)
         rect(width/2, height/2, width, height)
-        fill(255)
-        rect(width/2 + 8, height/2 - 10, 278, 470, 10)
+
         tint(255, fade.start)
-        image(phone, 0, 0)
+        image(phone2, 0, 0)
         pop()
+        if(fade.state == "in") {
+            if(speak==true) {
+
+                t.clear()
+                t.setText(phonetalk[1]+response)
+                t.show();
+            }
+            else {
+            t.setText(phonetalk[0])
+            t.show()
+            }
+        }
     }
 }
+let phonetalk = ["This is the arrival check-in \nportal.\n\nPlease state your name \nto verify your identity.", "Did you say your name was: \n","then more"]
+
 let scanhit, hashit = false, time;
 function drawPhone() {
   for (let i = 0; i < predictions.length; i += 1) {
@@ -356,6 +376,7 @@ class Text {
     this.ms = ms;
     this.x = x;
     this.y = y;
+    this.time = 0;
   }
   setText(str) {
     this.text = str;
@@ -364,8 +385,8 @@ class Text {
     this.count = 0;
   }
   show() {
-    if(millis() - time > this.ms) {
-      time = millis();
+    if(millis() - this.time > this.ms) {
+      this.time = millis();
       this.count +=1
     }
     let p = this.text.substring(0, this.count);
