@@ -6,7 +6,7 @@ let t; //general text obj
 function setup() {
     setupSpeech();
     //!
-    //setupHand();
+    setupHand();
     setupObjects();
     createCanvas(800, 600);
     textAlign(LEFT);
@@ -50,40 +50,42 @@ function draw() {
     
     //initial loadModel
     //!
-//    if (handposeModel && videoDataLoaded && poseinit == false){
-//        handposeModel.estimateHands(capture.elt).then(function(_hands){
-//      
-//            predictions = _hands;
-//        })
-//        poseinit = true;
-//        print('runs')
-//   }
-//  
-//    if(poseinit == false) {
-//        gif.show();
-//        background(0)
-//        gif.position(width/2-gif.width/2, height/2-gif.height/2);
-//        fill(255)
-//        textSize(30);
-//        text('Loading. . .', width/2, height/2);
-//    }
-//    else {
-//        gif.hide();
-//    }
+    if (handposeModel && videoDataLoaded && poseinit == false){
+        handposeModel.estimateHands(capture.elt).then(function(_hands){
+            predictions = _hands;
+        })
+        poseinit = true;
+        print('runs')
+   }
+  
+    if(poseinit == false) {
+        gif.show();
+        background(0)
+        gif.position(windowWidth/2-gif.width/2, height/2-gif.height/2);
+        fill(255)
+        textSize(30);
+        push();
+        textAlign(CENTER)
+        text('Loading. . .', width/2, height * 0.9);
+        pop();
+    }
+    else {
+        gif.hide();
+    }
 
     //!
-//    if (handposeModel && videoDataLoaded && poseinit == true){
+    if (handposeModel && videoDataLoaded && poseinit == true){
         if(scene.scene == 0) 
             sceneIntro()
-//        
-//    }
+        
+    }
 }
 class Scene {
     //!
     constructor() {
         this.scene = 0;
         //!
-        this.subscene = 3;
+        this.subscene =0;
         this.nsub = false;
         this.nscene = false;
         this.nscene = false;
@@ -112,7 +114,7 @@ function sceneIntro() {
 
         if(move == true && y > -1100) {
             //!
-            y -=100;
+            y -=20;
             x = random(-1, 1)
             textfade -=10;
         }
@@ -196,14 +198,14 @@ function sceneIntro() {
         pop()
         if(fade.state == "in") {
             if(speak==true) {
-
-                t.clear()
+                t.reset(0);
+                t.clear();
                 t.setText(phonetalk[1]+response)
                 t.show();
             }
             else {
-            t.setText(phonetalk[0])
-            t.show()
+                t.setText(phonetalk[0])
+                t.show()
             }
         }
     }
@@ -252,6 +254,7 @@ function drawPhone() {
         }
         if(millis() - time > 2000) {
             ellipse(width-x, y,40)
+            speak = false;
             scene.nsub = false;
             scene.nextsub();
             fade = new Fade();
@@ -359,7 +362,7 @@ function makeStars(x) {
       
       if(move == true) {
           //!
-          star.y -=100;
+          star.y -=20;
           star.x += x;
       }
   }
@@ -377,12 +380,17 @@ class Text {
     this.x = x;
     this.y = y;
     this.time = 0;
+      this.id = 0;
   }
   setText(str) {
     this.text = str;
+    this.length = str.length;
   }
-  reset() {
-    this.count = 0;
+  reset(id) {
+      if(this.count >= this.length && this.id ==id) {
+        this.count = 0;
+          this.id +=1;
+      }
   }
   show() {
     if(millis() - this.time > this.ms) {
