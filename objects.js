@@ -1,7 +1,7 @@
 
 
 
-let dText = ["","> Where am I?", "Please process your arrival data. By scanning the code. \n\nWe will be opening doors shortly."];
+let dText = ["","> Where am I?", "Please process your arrival data by scanning the code. \n\nWe will be opening doors shortly.", "> Where can I get a ride?", "> Cab/Taxi\n\n> Train", "> Cab it is", "> Thank you!"];
 let dialogue = [];
 //show dialogue box
 function dialogueBox(fade) {
@@ -52,8 +52,9 @@ function dialogueTrue(start, end) {
 }
 
 let info = [
-    "Whenever the speech symbol is\nactive, you can advance through \nscenes by using speech commands.\nSome of these interactions will be \nguided, like this one!\n\nSay the phrase to try it out!",
-    "Whenever the hand symbol is\nactive, you can use your hadns \nto interact with a scene.\n\n\nBring your hand up to the \ncamera to try it out!"
+    "Whenever the speech symbol is\nactive, you can advance through \nscenes by using speech commands.\nSome of these interactions will be \nguided, like this one!\n\nSay the phrase to try it out!\n(make sure there is no noise \nin the background)",
+    "Whenever the hand symbol is\nactive, you can use your hadns \nto interact with a scene.\n\n\nBring your hand up to the \ncamera to try it out!",
+    "Whenever you see a speech \nbubble, there is an opportunity\nfor conversation.\n\nSay hello to start it!"
     
 ];
 function infoBox(info, t, x, y, w, h, r, pos, p, fade, bg) {
@@ -80,7 +81,11 @@ function infoBox(info, t, x, y, w, h, r, pos, p, fade, bg) {
         endShape(CLOSE);
     }
     if(pos == "right") {
-        
+        beginShape();
+        vertex(x+w + 20, y+h*p);
+        vertex(x+w, y+h*p - 20);
+        vertex(x+w, y+h*p + 20);
+        endShape(CLOSE);
     }
     pop();
     
@@ -138,5 +143,33 @@ function activateIcon(icon, fade) {
         canpose = true
         
     }
-
 }
+function talk(str, x, y, w, h, lr) {
+    fill(255)
+    noStroke();
+    rect(x, y, w, h, 10)
+    if(lr == "r") {
+        beginShape();
+        vertex(x+w - 10, y+h);
+        vertex(x+w, y+h - 10);
+        vertex(x+w + 10, y+h+5);
+        endShape(CLOSE);
+    }
+    push();
+        fill(0)
+        textLeading(18);
+        textSize(12)
+        textAlign(LEFT);
+        textFont('Montserrat');
+        text(str, x + 20, y+25)
+    pop();
+    
+}
+
+
+
+
+
+
+
+

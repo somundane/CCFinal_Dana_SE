@@ -1,6 +1,7 @@
 //Intro
-let mouse, mic, hand;
+let mouse, mic, hand, speechleft, speechright;
 let city, wind, phone, plane, scan, phone2;
+let exit, taxi;
 let gif;
 function preload() {
     gif = createImg("https://media.giphy.com/media/3o7bu3XilJ5BOiSGic/source.gif");
@@ -15,6 +16,11 @@ function preload() {
     mouse = loadImage('visuals/icons/mouse.png');
     mic = loadImage('visuals/icons/mic.png');
     hand = loadImage('visuals/icons/hand.png');
+    speechleft = loadImage('visuals/icons/speechleft.png');
+    speechright = loadImage('visuals/icons/speechright.png');
+    
+    exit = loadImage('visuals/intro/planeexit.png');
+    taxi = loadImage('visuals/intro/taxi.png');
 }
 
 

@@ -1,12 +1,14 @@
 let stars = []
 let spark = ['y', 'n']
-let scene; //ll around scene obj
+let scene, convo; //ll around scene/convo obj
 let fade; //all around fade obj
 let t; //general text obj
+let timer; //general timer 
+let handposeloaded = false;
 function setup() {
     setupSpeech();
     //!
-    setupHand();
+    //setupHand();
     setupObjects();
     createCanvas(800, 600);
     textAlign(LEFT);
@@ -29,8 +31,14 @@ function setup() {
         dialogue.push(t)
     }
     scene = new Scene();
+    convo = new Scene();
     fade = new Fade();
     t = new Text("", width/2-80, height/2-40, 15)
+    timer = new Timer();
+    
+    
+    //!
+    scene.subscene = 5
 }
 
 let move = false;
@@ -43,42 +51,47 @@ let s = 30
 let poseinit = false;
 function draw() { 
     background(220);
-    print(speak)
+    //print(speak)
     if(canspeak == true && speak == true) {
         print(response);
     }
     
     //initial loadModel
     //!
-    if (handposeModel && videoDataLoaded && poseinit == false){
-        handposeModel.estimateHands(capture.elt).then(function(_hands){
-            predictions = _hands;
-        })
-        poseinit = true;
-        print('runs')
-   }
-  
-    if(poseinit == false) {
-        gif.show();
-        background(0)
-        gif.position(windowWidth/2-gif.width/2, height/2-gif.height/2);
-        fill(255)
-        textSize(30);
-        push();
-        textAlign(CENTER)
-        text('Loading. . .', width/2, height * 0.9);
-        pop();
-    }
-    else {
-        gif.hide();
-    }
+//    if (handposeModel && videoDataLoaded && poseinit == false){
+//        handposeModel.estimateHands(capture.elt).then(function(_hands){
+//            predictions = _hands;
+//        })
+//        if(timer.count(800)) {
+//            poseinit = true;
+//            timer = new Timer();
+//        }
+//        print('runs')
+//   }
+//  
+//    if(poseinit == false) {
+//        gif.show();
+//        background(0)
+//        gif.position(windowWidth/2-gif.width/2, height/2-gif.height/2);
+//        fill(255)
+//        textSize(30);
+//        push();
+//        textAlign(CENTER)
+//        text('Loading. . .', width/2, height * 0.9);
+//        pop();
+//    }
+//    else {
+//        gif.hide();
+//    }
 
     //!
-    if (handposeModel && videoDataLoaded && poseinit == true){
+//    if (handposeModel && videoDataLoaded && poseinit == true){
         if(scene.scene == 0) 
-            sceneIntro()
+            sceneIntro();
+        if(scene.scene == 1)
+            sceneChapOne();
         
-    }
+//    }
 }
 class Scene {
     //!
@@ -103,10 +116,13 @@ class Scene {
         }
     }
 }
+
+
 function cursor() {
     //find middle of palm
     //grow circle
 }
+let user;
 function sceneIntro() {
     if(scene.subscene >= 0 && scene.subscene < 2) {
         fill(0)
@@ -124,9 +140,8 @@ function sceneIntro() {
         //add ligtinhg effects?
         image(wind, 0, 0)
         if(scene.subscene == 0 && y <= -1100) {
-            scene.nsub == false;
             fade = new Fade();
-            scene.nextsub();
+            nextSubscene();
         }
         push();
         fill(255, textfade);
@@ -143,18 +158,18 @@ function sceneIntro() {
             dialogueBox(fade.start);
             activateIcon("speech", fade.start);
             if(speak == true) {
-                if(response == "where am I") {
+                if(response.includes("where am I")) {
                     if(fade.state == "in")
                         fade.fadeOut(10);
                     if(fade.start < 0) {
-                        scene.nsub = false;
-                        scene.nextsub();
+                        nextSubscene();
                         fade = new Fade();
                     }
                 }
             } 
         }
     }
+    
     if(scene.subscene == 2) {
         image(city, 0, -1100)
         image(wind, 0, 0)
@@ -163,10 +178,15 @@ function sceneIntro() {
         tint(255, fade.start)
         image(plane, 0, 0)
         image(scan, 0, 0)
+            push()
+            fill(255)
+            textSize(28)
+            textFont('Roboto Mono')
+            text('Scan code upon arrival.', width*0.35, height*0.08)
+            pop()
         pop();
         if(fade.state == "in" && scene.subscene == 2) {
-            scene.nsub = false;
-            scene.nextsub();
+            nextSubscene();
             fade = new Fade();
             print('this runs')
         }
@@ -174,6 +194,12 @@ function sceneIntro() {
         if(scene.subscene == 3) {
             image(plane, 0, 0)
             image(scan, 0, 0)
+            push()
+            fill(255)
+            textSize(28)
+            textFont('Roboto Mono')
+            text('Scan code upon arrival.', width*0.35, height*0.08)
+            pop()
                 fade.fadeIn(10);
                 infoBox(info[1], "Gesture Control", width * 0.03, height * 0.43, 300, 200, 8, "down", 0.13, fade.start, false);
                 dialogueTrue(2, 2);
@@ -186,10 +212,30 @@ function sceneIntro() {
                     pose = true;
                 }
                 if(pose == true) {
-
-                    handposeModel.estimateHands(capture.elt).then(function(_hands){
+                    if(handposeloaded == false) {
+                        push()
+                        translate(10, height*0.85)
+                        textSize(12)
+                        fill(100, 0, 0)
+                        rect(width*0.8, height*0.05, 120,30)
+                        fill(255)
+                        text("Please Wait", 660, height*0.08)
+                        pop()
+                    }                handposeModel.estimateHands(capture.elt).then(function(_hands){
                 predictions = _hands;
-                  //Math.round(predictions[0].handInViewConfidence*1000)/1000;
+                   print(predictions) //Math.round(predictions[0].handInViewConfidence*1000)/1000;
+                    if(predictions.length == 0) {
+                        //let user know
+                        push()
+                        translate(10, height*0.85)
+                        textSize(12)
+                        fill(100, 0, 0)
+                        rect(width*0.8, height*0.05, 120,30)
+                        fill(255)
+                        text("No Hand Found", 660, height*0.08)
+                        pop()
+                    }
+                    else handposeloaded = true;
                 })
                     drawPhone();
 //                  drawKeypoints();
@@ -202,32 +248,225 @@ function sceneIntro() {
         textSize(15);
         image(plane, 0, 0)
         image(scan, 0, 0)
-        fade.fadeIn(10);
+        push()
+        fill(255)
+        textSize(28)
+        textFont('Roboto Mono')
+        text('Scan code upon arrival.', width*0.35, height*0.08)
+        pop()
+        fade.fadeIn(20);
         
         push()
         rectMode(CENTER)
         let f = map(fade.start, 0, 255, 0, 200)
         fill(0, f)
         rect(width/2, height/2, width, height)
-
+        activateIcon("speech", fade.start);
         tint(255, fade.start)
         image(phone2, 0, 0)
         pop()
         if(fade.state == "in") {
             if(speak==true) {
-                t.reset(0);
-                t.clear();
-                t.setText(phonetalk[1]+response)
-                t.show();
+                let name;
+//                t.clear();               
+//                t.setText(phonetalk[1]+name[0]+" is that correct?")
+//                t.show();
+                if(!response.includes("yes") && !response.includes("no")) {
+                    t.reset(2);
+                    name = split(response, " ");
+                    typeText(phonetalk[1]+name[0]+" is that correct?", 2)
+                    user = name;
+                }
+
+                if(response.includes("yes")){
+                    t.reset(4);
+//                    t.clear();
+//                    t.setText("Voice recognized. \nYour identity has been verified. \n\nName: "+name[0]"\nTrip Duration: Indefinite\n\nWelcome to Metropolis 612!")
+//                    t.show();
+                    typeText("Voice recognized. \nIdentity verified. \n\nName: "+user+"\nTrip Duration: Indefinite\n\nWelcome to Metropolis 612!", 4);
+                    if(t.count >= t.length && t.id >= 5) {
+                        t.re = false;
+                        if(timer.count(2000)) {
+                            fade.fadeOut(10);
+                        }
+                        if(fade.fadedOut()) {
+                            fade = new Fade();
+                            timer = new Timer();
+                            response = "";
+                            nextSubscene();
+                        }
+                        }                        
+                    }
+                }
+                else if(response.includes("no")) {
+                    t.reset(6);
+                    typeText("Please re-state your name.", 6);
+                }
             }
             else {
-                t.setText(phonetalk[0])
-                t.show()
+                t.reset(0);
+//                t.setText(phonetalk[0])
+//                t.show()
+                typeText(phonetalk[0], 0);
             }
         }
     }
+    if(scene.subscene == 5) {
+        if(fade.state != "in") {
+            image(plane, 0, 0)
+            image(scan, 0, 0)
+            push()
+            fill(255)
+            textSize(28)
+            textFont('Roboto Mono')
+            text('Scan code upon arrival.', width*0.35, height*0.08)
+            pop()
+        }
+        if(fade.state == "out")
+            fade.fadeIn(20);
+        push();
+        tint(255, fade.start)
+        image(exit, 0, 0)
+        pop();
+        print(response)
+        if(spoken == false) {
+            infoBox(info[2], "Conversation", width * 0.1, height * 0.18, 300, 170, 8, "right", 0.2, fade.start, false);
+            image(speechright, 420, 120)
+        }
+        dialogueTrue(0,0);
+        dialogueBox(fade.start);
+        activateIcon("speech", fade.start);
+        speechright.resize(500, 0)
+        let s5 = []
+        if(fade.state == "in") {
+            if(speak==true) {
+                if((response.includes("hello") || response.includes("hi") || response.includes("hey"))) {
+                    convo.nextsub();
+                    print(convo.subscene)
+                    spoken = true;
+                }
+            }
+            if(convo.subscene == 1) {
+                talk("Hey there. Is there anything\nI can help you with?", width*0.3, height*0.1, 200, 80, "r")
+                dialogueTrue(3,3);
+                dialogueBox(255);
+                if(response.includes("where can I") || response.includes("a ride")|| response.includes("where can I get a ride")) {
+                    convo.nsub = false;
+                    response = ""
+                    convo.nextsub();
+                }
+            }
+            if(convo.subscene == 2) {
+                talk("It depends. Are you looking \nto ride a train or a cab?", width*0.3, height*0.1, 200, 80, "r")
+                dialogueTrue(4, 4);
+                dialogueBox(255);
+                if(response != "") {
+                    if(response.includes("train")) {
+                        response = ""
+                        convo.subscene = 4;
+                    }  
+                    else if(response.includes("cab")||response.includes("taxi")) {
+                        response = ""
+                        convo.subscene = 3;
+                    }
+                    else {
+                        response = ""
+                        convo.subscene = 5;
+                    }  
+                }
+            }
+            if(convo.subscene == 3) {
+                talk("Turn left as you exit and\nyou'll find the cabs and\n\nwaiting area there.", width*0.3, height*0.1, 200, 90, "r")
+                dialogueTrue(6, 6);
+                dialogueBox(255);
+                if(response != "") { if(response.includes("thank you")||response.includes("thanks")) {
+                        response = ""
+                        convo.subscene = 6;
+                    } 
+                }
+            }
+            if(convo.subscene == 4) {
+                talk("The trains are undergoing\nheavy maintenance now.\n\nThis storyline is not available \nyet ;) better take a cab.", width*0.3, height*0.1, 200, 100, "r")
+                dialogueTrue(5, 5);
+                dialogueBox(255);
+                if(response != "") { if(response.includes("cab")||response.includes("taxi")||response.includes("it is")) {
+                        response = ""
+                        convo.subscene = 3;
+                    } 
+                }
+                
+            }
+            if(convo.subscene == 5) {
+                talk("I'm sorry. I don't think\nwe have that type of\ntransportation.\n\nI can only give you info on\neither cabs or trains.", width*0.3, height*0.1, 200, 120, "r")
+                dialogueTrue(4, 4);
+                dialogueBox(255);
+                if(response != "") {
+                    if(response.includes("train") || response.includes("trains")) {
+                        response = ""
+                        convo.subscene = 4;
+                    }  if(response.includes("cab")||response.includes("Taxi")) {
+                        response = ""
+                        convo.subscene = 3;
+                    }
+                }
+            }
+            if(convo.subscene == 6) {
+                talk("No worries.\n Have a great day!", width*0.3, height*0.1, 200, 60, "r")
+                if(timer.count(1000)) {
+                    fade.fadeOut(10);
+                }
+                if(fade.fadedOut()) {
+                    fade = new Fade();
+                    timer = new Timer();
+                    convo = new Scene();
+                    nextScene();
+                }
+            }
+            
+            activateIcon("speech", fade.start);
+        }
+    }
 }
-let phonetalk = ["This is the arrival check-in \nportal.\n\nPlease state your name \nto verify your identity.", "Did you say your name was: \n","then more"]
+let spoken = false;
+function nextSubscene() {
+    scene.nsub = false;
+    scene.nextsub();
+}
+function nextScene() {
+    
+}
+function typeText(str, id) {
+    //id + 1 = reset
+    if(t.id != (id + 1)) {
+        t.id = id;
+    } else { 
+        t.clear();
+        t.setText(str);
+        t.show(); 
+    }
+}
+class Timer {
+    constructor() {
+        this.start = false;
+        this.time = 0;
+        
+    }
+    count(ms) {
+        if(this.start == false) {
+            this.time = millis()
+            this.start = true;
+        }
+        else {
+            if(millis() - this.time > ms) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }  
+    }
+}
+let phonetalk = ["This is the arrival check-in \nportal.\n\nPlease state your name \nto verify your identity.", "You said your name was: \n"]
 
 let scanhit, hashit = false, time;
 function drawPhone() {
@@ -272,8 +511,8 @@ function drawPhone() {
         if(millis() - time > 2000) {
             ellipse(width-x, y,40)
             speak = false;
-            scene.nsub = false;
-            scene.nextsub();
+            pose = false;
+            nextSubscene();
             fade = new Fade();
         }
       }
@@ -385,8 +624,6 @@ function makeStars(x) {
   }
 }
 
-
-
 class Text {
   constructor(str, x, y, ms) {
     this.original = str;
@@ -397,16 +634,17 @@ class Text {
     this.x = x;
     this.y = y;
     this.time = 0;
-      this.id = 0;
+    this.id = 0;
+    this.re = true;
   }
   setText(str) {
     this.text = str;
     this.length = str.length;
   }
   reset(id) {
-      if(this.count >= this.length && this.id ==id) {
+      if(this.count >= this.length && this.id == id) {
         this.count = 0;
-          this.id +=1;
+        this.id +=1;
       }
   }
   show() {
@@ -427,6 +665,11 @@ class Text {
   }
 }
 
+class Delay {
+    constructor() {
+        this.now = millis();
+    }
+}
 //class InfoText{
 //    constructor(str) {
 //        this.shown = false;
