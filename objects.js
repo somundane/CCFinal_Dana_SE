@@ -1,11 +1,15 @@
-
-
-
-let dText = ["","> Where am I?", "Please process your arrival data by scanning the code. \n\nWe will be opening doors shortly.", "> Where can I get a ride?", "> Cab/Taxi\n\n> Train", "> Cab it is", "> Thank you!"];
+//0-2 //3-6 //7-10 //11-
+let dText = [
+    "","> Where am I?", "Please process your arrival data by scanning the code. \n\nWe will be opening doors shortly.",
+             
+"> Where can I get a ride?", "> Cab/Taxi\n\n> Train", "> Cab it is", "> Thank you!",
+            
+"> . . .Sorry\n\n> Who are you?","> So who are you again?", "> Training. . .?", "> Let's do this!"];
 let dialogue = [];
 //show dialogue box
 function dialogueBox(fade) {
     fill(0, fade)
+    noStroke();
     rect(0, height * 0.82, width, height * 0.2)
     for(let i = 0; i < dialogue.length; i ++) {
         if(dialogue[i].show == true) {
@@ -53,8 +57,9 @@ function dialogueTrue(start, end) {
 
 let info = [
     "Whenever the speech symbol is\nactive, you can advance through \nscenes by using speech commands.\nSome of these interactions will be \nguided, like this one!\n\nSay the phrase to try it out!\n(make sure there is no noise \nin the background)",
-    "Whenever the hand symbol is\nactive, you can use your hadns \nto interact with a scene.\n\n\nBring your hand up to the \ncamera to try it out!",
-    "Whenever you see a speech \nbubble, there is an opportunity\nfor conversation.\n\nSay hello to start it!"
+    "Whenever the hand symbol is\nactive, you can use your hands \nto interact with a scene.\n\n\nBring your hand up to the \ncamera to try it out!",
+    "Whenever you see a speech \nbubble, there is an opportunity\nfor conversation.\n\nSay hello to start it!",
+    "The speaker indicates sound\ncoming from the other end.\n\nIn this case, it will be input\nfrom Agent K-9.\n\nSay something for Agent K-9 to hear!"
     
 ];
 function infoBox(info, t, x, y, w, h, r, pos, p, fade, bg) {
@@ -155,6 +160,13 @@ function talk(str, x, y, w, h, lr) {
         vertex(x+w + 10, y+h+5);
         endShape(CLOSE);
     }
+    if(lr == "l") {
+        beginShape();
+        vertex(x - 10, y+h+10);
+        vertex(x, y+h - 10);
+        vertex(x + 10, y+h);
+        endShape(CLOSE);
+    }
     push();
         fill(0)
         textLeading(18);
@@ -166,10 +178,20 @@ function talk(str, x, y, w, h, lr) {
     
 }
 
-
-
-
-
-
-
-
+function makeStars(x) {
+  for (let i = 0; i < stars.length; i++) {
+    noStroke();
+    fill(255, 200);
+    let star = stars[i];
+    if (star.spark == "y")
+      ellipse(star.x, star.y, star.size + random(0, 1))
+    else
+      ellipse(star.x, star.y, star.size)
+      
+      if(move == true) {
+          //!
+          star.y -=10;
+          star.x += x;
+      }
+  }
+}
