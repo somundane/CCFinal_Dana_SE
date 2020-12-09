@@ -1,10 +1,10 @@
-//0-2 //3-6 //7-10 //11-
+//0-2 //3-6 //7-10 //11-15
 let dText = [
     "","> Where am I?", "Please process your arrival data by scanning the code. \n\nWe will be opening doors shortly.",
              
 "> Where can I get a ride?", "> Cab/Taxi\n\n> Train", "> Cab it is", "> Thank you!",
             
-"> . . .Sorry\n\n> Who are you?","> So who are you again?", "> Training. . .?", "> Let's do this!"];
+"> . . .Sorry\n\n> Who are you?","> So who are you again?", "> Training. . .?", "> Let's do this!", "> Okay"];
 let dialogue = [];
 //show dialogue box
 function dialogueBox(fade) {
@@ -57,7 +57,7 @@ function dialogueTrue(start, end) {
 
 let info = [
     "Whenever the speech symbol is\nactive, you can advance through \nscenes by using speech commands.\nSome of these interactions will be \nguided, like this one!\n\nSay the phrase to try it out!\n(make sure there is no noise \nin the background)",
-    "Whenever the hand symbol is\nactive, you can use your hands \nto interact with a scene.\n\n\nBring your hand up to the \ncamera to try it out!",
+    "Whenever the hand symbol is\nactive, you can use your hands \nto interact with a scene.\n\nBring your hand up to the \ncamera to try it out!\n(Detection can take a few seconds)",
     "Whenever you see a speech \nbubble, there is an opportunity\nfor conversation.\n\nSay hello to start it!",
     "The speaker indicates sound\ncoming from the other end.\n\nIn this case, it will be input\nfrom Agent K-9.\n\nSay something for Agent K-9 to hear!"
     

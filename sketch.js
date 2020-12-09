@@ -37,7 +37,7 @@ function setup() {
     
     
     //! to set scenes
-//    scene.scene = 1
+//    scene.scene = 4
 //    scene.subscene = 0
 //    convo.subscene = 2
 }
@@ -97,12 +97,36 @@ function draw() {
         if(scene.scene == 2)
             trainingIntro();
         if(scene.scene == 3)
-            doorGameIntro();
+            doorGame();
+        if(scene.scene == 4)
+            equipmentTraining();
     }
 }
+function equipmentTraining() {
+    fade.fadeIn(20)
+    push();
+    tint(255, fade.start)
+    image(range, 0, 0)
+    image(darts, 0, 0)
+    let f = map(fade.start, 0, 255, 0, 200)
+    fill(0, f)
+    rect(0, 0, width, height)
+    pop();
+    push()
+    rectMode(CENTER)
+    fill(240)
+    noStroke();
+    rect(width/2, height/2, 500, 300, 10)
+        fill(40)
+        textSize(24)
+        textAlign(CENTER);
+        textFont('Poppins');
+        text("To Be Continued. . .\n\nEquipment Training Facility\nUnder Construction :)", width/2, height*0.45)
+    pop()
+}
 let bomb = false;
-function doorGameIntro() {
-      setupDoors();
+function doorGame() {
+    setupDoors();
     let ec;
     if(done == true) {
         if(rooms[end.row][end.col].color == "w") ec = "White"
@@ -128,8 +152,8 @@ function doorGameIntro() {
         scale(-1,1);
         image(lizard, -250, 200)
         pop()
-        pop();
     }
+    pop();
     dialogueTrue(0, 0);
     dialogueBox(fade.start);
     activateIcon("speech", fade.start);
@@ -201,17 +225,17 @@ function doorGameIntro() {
             }
         }
         if(convo.subscene == 4) {
-            talk("Good. Now you get it.\nYou must now tell K-9 where\nto go next. hint: udlr \nYou're on your own from here", width*0.46, height*0.4, 200, 90, "r")
+            talk("Good. Now you get it.You \nmust now tell K-9 where\nto go next. (hint: udlr) \nYou're on your own now.", width*0.46, height*0.4, 200, 90, "r")
             
             k9speak("I am in a "+c+" room with " +rooms[row][col].door+ " doors.")
             
-            if(speak == true && (response.includes("up"))) {
+            if(speak == true && (response.includes("up") || response.includes("co-op")|| response.includes("above"))) {
                 timer = new Timer();
                 response = "";
                 moveUp()
                 convo.subscene=5;
             }
-            else if(speak == true && (response.includes("down"))) {
+            else if(speak == true && (response.includes("down")|| response.includes("below")|| response.includes("town"))) {
                 timer = new Timer();
                 response = "";
                 moveDown()
@@ -223,7 +247,7 @@ function doorGameIntro() {
                 moveLeft()
                 convo.subscene=5;
             }
-            else if(speak == true && (response.includes("right"))) {
+            else if(speak == true && (response.includes("right")|| response.includes("ride"))) {
                 timer = new Timer();
                 response = "";
                 moveRight()
@@ -267,12 +291,27 @@ function doorGameIntro() {
             k9speak("\We found the bomb!")
             bomb = true;
             if(timer.count(2000)) {
-                talk("Good job!!! That wasn't so\nhard wasn't it?\nNow take the rest of the\nday off to explore the grounds.\nTO BE CONTINUED...", width*0.46, height*0.4, 200, 90, "r");
+                talk("Good job!!! That wasn't so\nhard, wasn't it?\nNow take the rest of the\nday off and we'll continue\ntomorrow!", width*0.46, height*0.4, 200, 90, "r");
+            }
+            if(timer.count(3000)) {
+                dialogueTrue(15, 15);
+                dialogueBox(255);
+                if(speak == true &&(response.includes("okay")||response.includes("ok")||response.includes("alright") || response.includes("yep"))) {
+                    fade.fadeOut(20);
+                    if(fade.fadedOut()) {
+                        fade = new Fade();
+                        timer = new Timer();
+                        convo = new Scene();
+                        scene.subscene = 0;
+                        spoken = false;
+                        nextScene();
+                    }
+                }
             }
         }
     }
 
-    if(inform == true) {
+    if(inform == true && bomb == false) {
         push()
         fill(255)
         textSize(16)
@@ -284,20 +323,21 @@ function doorGameIntro() {
 }
 let inform = false;
 function trainingIntro(){
-    if(fade.state == "out")
+    if(scene.subscene == 0) { 
+        if(fade.state == "out")
         fade.fadeIn(20)
-    push();
-    tint(255, fade.start)
-    image(facility, 0, 0)
-    lizard.resize(0, 400)
-        push()
-        translate(width,0); 
-        scale(-1,1);
-        image(lizard, -70, 250)
-        pop()
-    pop();
-    if(scene.subscene==0) {
+        push();
+        tint(255, fade.start)
+        image(facility, 0, 0)
+        lizard.resize(0, 400)
+            push()
+            translate(width,0); 
+            scale(-1,1);
+            image(lizard, -70, 250)
+            pop()
+        pop();
     if(fade.state == "in") {
+    if(convo.subscene==0) {
         talk("Welcome to the MIB\ntraining facility!", width*0.4, height*0.4, 200, 90, "r")
         if(timer.count(2000))
             talk("We will begin your training\nwith an asessment of your\ncommunication and your\nproblem solving.", width*0.4, height*0.4, 200, 90, "r")
@@ -317,7 +357,9 @@ function trainingIntro(){
                 timer = new Timer();
                 response = "";
                 convo.nextsub();
+                predictions = [];
             }
+        }
         }
         if(convo.subscene == 1) {
             talk("Great! Let's begin.", width*0.4, height*0.4, 200, 90, "r")
@@ -380,16 +422,23 @@ function trainingIntro(){
                     fade = new Fade();
                     convo = new Scene();
                     scene.subscene =1;
+                    response = ""
                 }
                 }
             
             }
         }
-        
     }
-    }
+            }
     
     if(scene.subscene == 1) {
+        image(facility, 0, 0)
+        lizard.resize(0, 400)
+            push()
+            translate(width,0); 
+            scale(-1,1);
+            image(lizard, -70, 250)
+            pop()
         if(convo.subscene == 0) {
             fade.fadeIn(20)
             talk("The device is pretty \nstandard. You can speak \ninto it to communicate\nwith agent K-9\n", width*0.4, height*0.4, 200, 90, "r")
@@ -401,7 +450,7 @@ function trainingIntro(){
             tint(255, fade.start)
             image(speaker, 90, height*0.86)
             pop();
-            if(speak!=true) {
+            if(timer.count(2000)) {
                 infoBox(info[3], "Radio Device", width * 0.03, height * 0.43, 300, 200, 8, "down", 0.32, fade.start, true);
                 //dialoguebox set
                 dialogueTrue(0, 0);
@@ -411,11 +460,11 @@ function trainingIntro(){
                 tint(255, fade.start)
                 image(speaker, 90, height*0.86)
                 pop();
-            }
-            else {
-                response = "";
-                convo.subscene = 1;
-                timer = new Timer()
+                if(speak == true && response!="") {
+                    convo.subscene = 1;
+                    response = "";
+                    timer = new Timer()
+                }
             }
         }
         if(convo.subscene == 1) {
@@ -547,7 +596,7 @@ function taxiScene() {
             if(convo.subscene == 4) {
                 talk("Yes. Training. \n\nI understand you come from \nthe FBI.", width*0.3, height*0.1, 200, 90, "l")
                 if(timer.count(2000))
-                    talk("Your earth FBI and the Mars \nMetropolis Investigation \nBureau (M.I.B) have very \ndifferent protocols.", width*0.3, height*0.1, 200, 90, "l")
+                    talk("But the FBI and the Mars \nMetropolis Investigation \nBureau (M.I.B) have very \ndifferent protocols.", width*0.3, height*0.1, 200, 90, "l")
                 if(timer.count(6000))
                     talk("As such, we must acquaint \nyou with them and also \ntrain you to use our \ntactical equipment.", width*0.3, height*0.1, 200, 90, "l")
                 if(timer.count(10000))
@@ -610,7 +659,7 @@ function taxiScene() {
                 if(timer.count(4500)) {
                     dialogueTrue(10, 10);
                     dialogueBox(255);
-                    if(response.includes("Let's do this") || response.includes("do this")) {
+                    if(response.includes("do") ||response.includes("this") ||response.includes("do this") || response.includes("do it")) {
                         fade.fadeOut(10)
                         if(fade.fadedOut()) {
                             fade = new Fade();

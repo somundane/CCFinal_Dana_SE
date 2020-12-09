@@ -5,7 +5,9 @@ let taxi, id, glare, facility, blueprint, device, range, darts, bottles, speaker
 let gif;
 let lizard;
 function preload() {
-    gif = createImg("https://media.giphy.com/media/3o7bu3XilJ5BOiSGic/source.gif");
+//    gif = createImg("https://media.giphy.com/media/3o7bu3XilJ5BOiSGic/source.gif");
+//    gif.hide(); 
+    gif = createImg("https://media.giphy.com/media/y83E9zBVsoPIeodMQk/giphy.gif");
     gif.hide();
     
     //ICONS
