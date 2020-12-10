@@ -4,41 +4,71 @@ let done = false
 let st = false;
 let c;
 let cant = false;
+//row and col are start r and c are end
 function setupDoors() {
-  let r, c;
-  r = int(random(0, 4))
-  c = int(random(0, 9))
-  if(done == false) {
-    if(st == false) {
-      row = int(random(0, 4))
-      col = int(random(0, 9))
-      if(rooms[row][col].dir != "n") {
-        st = true;
-      }
-    //if n, change
-      else if(rooms[row][col].dir == "n" || rooms[row][col].door == null){
-        row = int(random(0, 4))
-        col = int(random(0, 9))
-      }
+    let r, c;
+    r = int(random(0, 4))
+    c = int(random(0, 9))
+
+    if(done == false) {
+        if(st == false) {
+            //set random start position
+            row = int(random(0, 4))
+            col = int(random(0, 9))
+            //make sure it's valid
+            if(rooms[row][col].dir != "n" && rooms[row][col].door != null) {
+                st = true
+            }
+            //otherwise stay in loop
+        }
+        //once we have row and col (aka start position)
+        else {
+            if(r >= row - 1 && r <= row -1 || c >= col-2 && c <=col+2) {
+                r = int(random(0, 4))
+                c = int(random(0, 9))
+                done = false;
+                end = {
+                    row: r,
+                    col: c
+                }
+            }
+            else done = true
+        }  
     }
-    else {
-      if(r == row || (r >= row-1 && r <=row+1))  {
-        r = int(random(0, 4))
-        done = false;
-      }
-      else done = true
-      if(c == col|| (c >= col-2 && c <=col+2)) {
-        c = int(random(0, 9))
-        done = false
-      }
-      else done = true
-      
-      end = {
-        row: r,
-        col: c
-      }
-    }
-  }
+
+}
+//
+//  if(done == false) {
+//    if(st == false) {
+//      row = int(random(0, 4))
+//      col = int(random(0, 9))
+//      if(rooms[row][col].dir == "n" || rooms[row][col].door == null || rooms[row][col].door == undefined || rooms[row][col].color == undefined){
+//        row = int(random(0, 4))
+//        col = int(random(0, 9))
+//      }
+//      else if(rooms[row][col].dir != "n") {
+//        st = true;
+//      }
+//    }
+//      //once we have the random r and c check against em?
+//    else {
+//      if(r == row || (r >= row-1 && r <=row+1))  {
+//        r = int(random(0, 4))
+//        done = false;
+//      }
+//      else done = true
+//      if(c == col|| (c >= col-2 && c <=col+2)) {
+//        c = int(random(0, 9))
+//        done = false
+//      }
+//      else done = true
+//      
+//      end = {
+//        row: r,
+//        col: c
+//      }
+//    }
+//  }
 }
 function limitDoors() {
     if(row<0) row = 0
