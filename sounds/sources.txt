@@ -1,0 +1,23 @@
+All sounds used are from freesound.
+Sound edits are from Audacity.
+P5 Reference: https://p5js.org/examples/sound-load-and-play-sound.html
+
+
+Scene 1
+
+landing: 166205__wshintani__airplane-landing
+pushbtn: 118227__joedeshon__phone-button-push
+
+
+Chap 1
+taxibg: 127244__miastodzwiekow__110805-caravan-ambience
+
+
+pickup: 267711__weejee-vdh__picking-up-keys
+
+
+radio: 30329__erh__radio-click-3
+
+ding: 234524__foolboymedia__notification-up-1
+
+help: 429037__theuncertainman__how-can-i-help-npc-british-male

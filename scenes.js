@@ -6,6 +6,8 @@ function sceneIntro() {
         text('p5.js', width/2, height/2);
 
         if(move == true && y > -1100) {
+            if (!landing.isPlaying())
+            landing.play();
             //!
             y -=10;
             x = random(-1, 1)
@@ -22,8 +24,9 @@ function sceneIntro() {
         }
         push();
         fill(255, textfade);
-        textSize(30);
+        textSize(42);
         textAlign(CENTER)
+        textFont('Lexend Deca')
         text('Space Espionage', width/2, height/2);
         pop();
         
@@ -50,7 +53,7 @@ function sceneIntro() {
     if(scene.subscene == 2) {
         image(city, 0, -1100)
         image(wind, 0, 0)
-        fade.fadeIn(10);
+        fade.fadeIn(20);
         push();
         tint(255, fade.start)
         image(plane, 0, 0)
@@ -65,7 +68,6 @@ function sceneIntro() {
         if(fade.state == "in" && scene.subscene == 2) {
             nextSubscene();
             fade = new Fade();
-            print('this runs')
         }
     }
         if(scene.subscene == 3) {
@@ -77,7 +79,7 @@ function sceneIntro() {
             textFont('Roboto Mono')
             text('Scan code upon arrival.', width*0.35, height*0.08)
             pop()
-                fade.fadeIn(10);
+                fade.fadeIn(20);
                 infoBox(info[1], "Gesture Control", width * 0.03, height * 0.43, 300, 200, 8, "down", 0.13, fade.start, false);
                 dialogueTrue(2, 2);
                 dialogueBox(fade.start);
@@ -224,12 +226,14 @@ function sceneIntro() {
                 }
             }
             if(convo.subscene == 1) {
+                sound.playOnce(help)
                 talk("Hey there. Is there anything\nI can help you with?", width*0.3, height*0.1, 200, 80, "r")
                 dialogueTrue(3,3);
                 dialogueBox(255);
                 if(response.includes("where can I") || response.includes("a ride")|| response.includes("where can I get a ride")) {
                     convo.nsub = false;
                     response = ""
+                    sound = new Sound();
                     convo.nextsub();
                 }
             }
@@ -242,7 +246,7 @@ function sceneIntro() {
                         response = ""
                         convo.subscene = 4;
                     }  
-                    else if(response.includes("cab")||response.includes("taxi")) {
+                    else if(response.includes("cab")||response.includes("Taxi")||response.includes("tab")) {
                         response = ""
                         convo.subscene = 3;
                     }
@@ -266,7 +270,7 @@ function sceneIntro() {
                 talk("The trains are undergoing\nheavy maintenance now.\n\nThis storyline is not available \nyet ;) better take a cab.", width*0.3, height*0.1, 200, 100, "r")
                 dialogueTrue(5, 5);
                 dialogueBox(255);
-                if(response != "") { if(response.includes("cab")||response.includes("taxi")||response.includes("it is")||response.includes("cavities")) {
+                if(response != "") { if(response.includes("cab")||response.includes("taxi")||response.includes("it is")||response.includes("then")) {
                         response = ""
                         convo.subscene = 3;
                     } 
@@ -336,7 +340,7 @@ function drawPhone() {
       scanhit = collideRectRect(220, 15, 40, 40, width-x-40, y-90, 80, 180);
       
       if(scanhit) {
-          print('HIT')
+//          print('HIT')
         if(hashit == false) {
           time = millis();
           hashit = true;
@@ -349,11 +353,13 @@ function drawPhone() {
           pop()
         }
         if(millis() - time > 2000) {
+            sound.playOnce(ding);
             ellipse(width-x, y,40)
             speak = false;
             pose = false;
             nextSubscene();
             fade = new Fade();
+            sound = new Sound();
         }
       }
       else{

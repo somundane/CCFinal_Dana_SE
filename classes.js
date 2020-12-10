@@ -138,3 +138,15 @@ function fadeText(text, s, x, y) {
         text(text, x, y);
     }
 }
+    
+class Sound {
+    constructor() {
+        this.play = false;
+    }
+    playOnce(sound) {
+        if(!sound.isPlaying() && this.play == false) {
+            sound.play();
+            this.play = true;
+        } 
+    }
+}

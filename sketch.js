@@ -5,6 +5,7 @@ let fade; //all around fade obj
 let t; //general text obj
 let timer; //general timer 
 let handposeloaded = false;
+let sound;//genera sound obj
 function setup() {
     setupSpeech();
     //!
@@ -32,12 +33,12 @@ function setup() {
     scene = new Scene();
     convo = new Scene();
     fade = new Fade();
-    t = new Text("", width/2-80, height/2-40, 15)
+    t = new Text("", width/2-80, height/2-40, 10)
     timer = new Timer();
-    
+    sound = new Sound();
     
     //! to set scenes
-//    scene.scene = 4
+    scene.scene = 2
 //    scene.subscene = 0
 //    convo.subscene = 2
 }
@@ -51,6 +52,7 @@ let s = 30
 let poseinit = false;
 function draw() { 
     background(220);
+
     //print(speak)
     if(canspeak == true && speak == true) {
         print(response);
@@ -74,15 +76,24 @@ function draw() {
    }
   
     if(poseinit == false) {
-        gif.show();
         background(0)
-        gif.position(windowWidth/2-gif.width/2, height/2-gif.height/2);
+        pop();
+        gif.show();
+        gif.position(windowWidth/2-gif.width/2, height/2-gif.height/2);        
+        push();
         fill(255)
         textSize(30);
-        push();
+        textFont('Open Sans')
         textAlign(CENTER)
         text('Loading. . .', width/2, height * 0.9);
         pop();
+        
+        push();
+        fill(255)
+        textSize(24);
+        textAlign(CENTER)
+        textFont('Open Sans')
+        text('Scatterbrain Productions', width/2, height*0.12);
     }
     else {
         gif.hide();
@@ -189,7 +200,6 @@ function doorGame() {
                 talk("You still with me?", width*0.46, height*0.4, 200, 90, "r") 
                 if(speak == true && (response.includes("yes") || response.includes("yep"))) {
                 timer = new Timer();
-                response = "";
                 convo.nsub = false;
                 convo.nextsub();
                 }
@@ -266,21 +276,25 @@ function doorGame() {
                     k9speak("It's not possible to do that!")
                 }
                 if(speak == true && (response.includes("up") ||response.includes("off")||response.includes("co-op"))) {
+                    if(response!="") k9speak.false()
                     timer = new Timer();
                     response = "";
                     moveUp()
                 }
                 else if(speak == true && (response.includes("down")||response.includes("dan"))) {
+                    if(response!="") k9speak.false()
                     timer = new Timer();
                     response = "";
                     moveDown()
                 }
                 else if(speak == true && (response.includes("left"))) {
+                    if(response!="") k9speak.false()
                     timer = new Timer();
                     response = "";
                     moveLeft()
                 }
                 else if(speak == true && (response.includes("right") ||response.includes("wright"))) {
+                    if(response!="") k9speak.false()
                     timer = new Timer();
                     response = "";
                     moveRight()
@@ -288,7 +302,7 @@ function doorGame() {
             }
         }
         if(convo.subscene == 6) {
-            k9speak("\We found the bomb!")
+            k9speak("\We found the bomb!", 4)
             bomb = true;
             if(timer.count(2000)) {
                 talk("Good job!!! That wasn't so\nhard, wasn't it?\nNow take the rest of the\nday off and we'll continue\ntomorrow!", width*0.46, height*0.4, 200, 90, "r");
@@ -357,7 +371,6 @@ function trainingIntro(){
                 timer = new Timer();
                 response = "";
                 convo.nextsub();
-                predictions = [];
             }
         }
         }
@@ -374,12 +387,27 @@ function trainingIntro(){
                 ellipse(width*0.53, height*0.69, 70)
                 image(earpiece, width/2, height*0.65)
                 pop()
+                timer = new Timer()
+                predictions = [];
+                convo.subscene = 2;
             }
+        }
+        if(convo.subscene == 2){
+//            print("Grab: " +grab)
+//            print("Hit: " +hit)
+                talk("First, you'll need to take\nthis earpiece.\nStandard secure two-way \ncommunication.", width*0.4, height*0.4, 200, 90, "r")
+                push()
+                fill(170)
+                noStroke()
+                ellipse(width*0.53, height*0.69, 70)
+                image(earpiece, width/2, height*0.65)
+                pop()
+            
             if(showid == true) {
                 push()
                 fill(0)
                 ellipse(63, height * 0.87, 80)
-                //rect(20, height * 0.80, 85, 90)
+                //rect(width*0.49, height*0.64, 100, 100)
                 translate(0, -46)
                 activateIcon("hand", fade.start); 
                 pop()
@@ -410,8 +438,10 @@ function trainingIntro(){
                     pop()
                 }   
                 drawKeypoints();
-                checkGrab(width*0.49, height*0.64, 70, 70);
+                checkGrab(width*0.50, height*0.63, 100, 100);
+                //timer is for debounce
                 if(grab && hit) {
+                    sound.playOnce(pickup)
                     dialogueTrue(0, 0);
                     dialogueBox(255);
                     activateIcon("speech", 255);
@@ -421,13 +451,14 @@ function trainingIntro(){
                     timer = new Timer()
                     fade = new Fade();
                     convo = new Scene();
+                    sound = new Sound();
                     scene.subscene =1;
                     response = ""
                 }
                 }
             
             }
-        }
+           }
     }
             }
     
@@ -476,6 +507,7 @@ function trainingIntro(){
             tint(255, fade.start)
             image(speaker, 90, height*0.86)
             pop();
+            print("Old: " + oldid)
             k9speak("Hi, " + user+"! Field Agent K-9 here.")
             if(timer.count(2000))
             k9speak("I will be your partner for your assessment today.")
@@ -488,6 +520,7 @@ function trainingIntro(){
                     if(response.includes("ready") || response.includes("I'm") || response.includes("go") || response.includes("brief")) {
                         timer = new Timer()
                         response = ""
+                        k9sound.play = false;
                         convo.subscene = 2;
                     }
                 }
@@ -517,10 +550,12 @@ function trainingIntro(){
         }
     }
 }
-function k9speak(str) {
+let k9sound = new Sound();
+function k9speak(str, id) {
+    k9sound.playOnce(radio)
     fill(0)
-    rect(160, height*0.86, width, 50)
-    push()
+        rect(160, height*0.86, width, 50)
+        push()
         fill(255)
         textSize(20)
         textAlign(LEFT);
@@ -530,18 +565,21 @@ function k9speak(str) {
 }
 let showid = false;
 function taxiScene() {
+    if (!taxibg.isPlaying())
+            taxibg.play();
     if(fade.state == "out")
         fade.fadeIn(20)
     push();
     tint(255, fade.start)
     image(taxi, 0, 0)
-    pop();
-    dialogueTrue(0,0);
-    dialogueBox(fade.start);
     speechleft.resize(500, 0)
     if(spoken == false) {
         image(speechleft, 210, 100)
     }
+    pop();
+    dialogueTrue(0,0);
+    dialogueBox(fade.start);
+
     fill(225)
     //rect(width*0.3, height*0.32, 260, 165)
     if(fade.state == "in") {
@@ -586,7 +624,7 @@ function taxiScene() {
                     dialogueBox(255);
                 }
                 if(timer.count(6000) && response != "") {
-                    if(response.includes("training")||response.includes("framing")) {
+                    if(response.includes("training")||response.includes("framing")||response.includes("freezing")||response.includes("ing")) {
                         response = ""
                         timer = new Timer();
                         convo.subscene = 4;
@@ -640,9 +678,11 @@ function taxiScene() {
                     drawKeypoints();
                     checkGrab(width*0.3, height*0.32, 260, 165);
                     if(grab && hit) {
+                        sound.playOnce(pickup)
                         showid = false
                         pose = false
                         timer = new Timer()
+                        sound = new Sound();
                         convo.subscene = 6;
                     }
                     else {
@@ -704,7 +744,8 @@ let hit;
 function checkGrab(x, y, w, h) {
       for (let i = 0; i < predictions.length; i += 1) {
       const prediction = predictions[i];
-    
+          fill(255, 0, 0)
+    rect(x, y, w, h)
   poly[0] = createVector(width-prediction.landmarks[8][0], prediction.landmarks[8][1]);
   poly[1] = createVector(width-prediction.landmarks[5][0], prediction.landmarks[5][1]);
   poly[2] = createVector(width-prediction.landmarks[17][0], prediction.landmarks[17][1]);

@@ -1,9 +1,15 @@
 //Intro
 let mouse, mic, hand, speechleft, speechright;
+//Intro
 let city, wind, phone, plane, scan, phone2, exit;
+//Chap1
 let taxi, id, glare, facility, blueprint, device, range, darts, bottles, speaker, earpiece;
 let gif;
 let lizard;
+//Sounds
+let landing, ding, taxibg, pickup, radio, help;
+let hasplayed = false;
+
 function preload() {
 //    gif = createImg("https://media.giphy.com/media/3o7bu3XilJ5BOiSGic/source.gif");
 //    gif.hide(); 
@@ -40,6 +46,17 @@ function preload() {
     earpiece = loadImage('visuals/training/earpiece.png');
     
     lizard = loadImage('visuals/characters/lizard.png');
+    
+    landing = loadSound('sounds/landing.wav');
+    landing.setVolume(0.55)
+
+    taxibg = loadSound('sounds/taxibg.mp3');
+    taxibg.setVolume(0.48)
+    
+    radio = loadSound('sounds/radio.wav');
+    ding = loadSound('sounds/ding.wav');
+    pickup = loadSound('sounds/pickup.wav');
+    help = loadSound('sounds/help.wav');
     
 }
 
