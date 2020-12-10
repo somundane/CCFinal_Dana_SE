@@ -40,9 +40,9 @@ function setup() {
     sound = new Sound();
     
     //! to set scenes
-    scene.scene = 3
-    scene.subscene = 0
-    convo.subscene = 2
+//    scene.scene = 3
+//    scene.subscene = 0
+//    convo.subscene = 2
     
 //    w = createButton('activate mic');
 //    w.mousePressed(doSomething);
