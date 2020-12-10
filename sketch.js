@@ -188,7 +188,7 @@ function doorGame() {
         if(convo.subscene == 0) {
         talk("We will test your logical\nabilities and communication\nin this assessment.", width*0.46, height*0.4, 200, 90, "r")
         if(timer.count(4000))
-            talk("Agent K-9 is in one \nof these rooms. The both\nof you must work together \nin diffusing a bomb.", width*0.46, height*0.4, 200, 90, "r")
+            talk("Agent K-9 is in one \nof these rooms. The both\nof you must work together \nin defusing a bomb.", width*0.46, height*0.4, 200, 90, "r")
         if(timer.count(8000)) {
             talk("Say yes if you're with me\nso far. Say no if you want me \nto repeat that.", width*0.46, height*0.4, 200, 90, "r")
             if(speak == true && (response.includes("yes") || response.includes("yep"))) {
