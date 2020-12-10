@@ -66,9 +66,11 @@ function draw() {
     }
     
     //for doors
-    if(rooms[row][col].color == "w") c = "White"
-    if(rooms[row][col].color == "y") c = "Yellow"
-    if(rooms[row][col].color == "g") c = "Green"
+    if(done == true) {
+        if(rooms[row][col].color == "w") c = "White"
+        if(rooms[row][col].color == "y") c = "Yellow"
+        if(rooms[row][col].color == "g") c = "Green"
+    }
     
     //initial loadModel
     //!

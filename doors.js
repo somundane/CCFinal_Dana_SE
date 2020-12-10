@@ -69,7 +69,7 @@ function setupDoors() {
 //      }
 //    }
 //  }
-}
+//}
 function limitDoors() {
     if(row<0) row = 0
     if(row>3) row = 3
