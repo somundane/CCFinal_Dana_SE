@@ -358,6 +358,7 @@ function drawPhone() {
             ellipse(width-x, y,40)
             speak = false;
             pose = false;
+            response = "";
             timer = new Timer();
             nextSubscene();
             fade = new Fade();
