@@ -122,6 +122,7 @@ function sceneIntro() {
         }
     //phone
     if(scene.subscene == 4) {
+                print(speak)
         textFont('Poppins')
         textSize(15);
         image(plane, 0, 0)
@@ -357,6 +358,7 @@ function drawPhone() {
             ellipse(width-x, y,40)
             speak = false;
             pose = false;
+            timer = new Timer();
             nextSubscene();
             fade = new Fade();
             sound = new Sound();
