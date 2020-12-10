@@ -446,7 +446,7 @@ function trainingIntro(){
                 drawKeypoints();
                 checkGrab(width*0.50, height*0.63, 100, 100);
                 //timer is for debounce
-                if(grab && hit) {
+                if(grab && hit && timer.count(1300)) {
                     sound.playOnce(pickup)
                     dialogueTrue(0, 0);
                     dialogueBox(255);
