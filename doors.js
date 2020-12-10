@@ -87,6 +87,6 @@ function moveRight() {
 let rooms =[
   [{dir:"rd", door:3, color:"w"}, {dir:"lrd", door:4, color:"y"}, {dir:"lrd", door:4, color:"w"}, {dir:"lrd", door:4, color:"g"}, {dir:"lrd", door:3, color:"y", sr: 2}, {dir:"n"}, {dir:"n"}, {dir:"lrd", door:3, color:"y", sl: 2}, {dir:"ld", door:2, color:"g"}],
   [{dir:"ud", door:2, color:"g"}, {dir:"ud", door:2, color:"g"}, {dir:"ur", door:4, color:"w", sr: 2}, {dir:"ur", door:4, color:"w", sr: 1, sl:1}, {dir:"ur", door:4, color:"w",sl: 2}, {dir:"lr", door:2, color:"w"}, {dir:"ld", door:2, color:"g"}, {dir:"ur", door:2, color:"y"}, {dir:"lrd", door:3, color:"y"}],
-  [{dir:"ud", door:4, color:"y", sr:1}, {dir:"ud", door:4, color:"y", sl:1}, {dir:"lrd", door:3, color:"w"}, {dir:"lrd", door:3, color:"y"}, {dir:"ld", door:2, color:"g", sr:1}, {dir:"n"}, {dir:"ur", door:2, color:"y", sl:1}, {dir:"lrd", door:3, color:"w"}, {dir:"lud", door:3, color:"w"}],
+  [{dir:"udr", door:4, color:"y", sr:1}, {dir:"udr", door:4, color:"y", sl:1}, {dir:"lrd", door:3, color:"w"}, {dir:"lrd", door:3, color:"y"}, {dir:"ld", door:2, color:"g", sr:1}, {dir:"n"}, {dir:"ur", door:2, color:"y", sl:1}, {dir:"lrd", door:3, color:"w"}, {dir:"lud", door:3, color:"w"}],
   [{dir:"ur", door:2, color:"w", sr:1}, {dir:"ur", door:2, color:"w", sl:1}, {dir:"lu", door:2, color:"g"}, {dir:"ru", door:2, color:"g"}, {dir:"lru", door:3, color:"y", sr:1}, {dir:"n"}, {dir:"lr", door:2, color:"w", sl: 1}, {dir:"lru", door:3, color:"y"}, {dir:"lu", door:2, color:"g"}]
 ]

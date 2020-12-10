@@ -306,22 +306,21 @@ function doorGame() {
             bomb = true;
             if(timer.count(2000)) {
                 talk("Good job!!! That wasn't so\nhard, wasn't it?\nThink you're ready\nfor equipment training?", width*0.46, height*0.4, 200, 90, "r");
-            }
-            if(timer.count(2500)) {
                 dialogueTrue(15, 15);
                 dialogueBox(255);
                 if(speak == true &&(response.includes("yes")||response.includes("no")||response.includes("maybe")||response.includes("okay")||response.includes("ok")||response.includes("alright") || response.includes("yep"))) {
                     fade.fadeOut(20);
-                    if(fade.fadedOut()) {
-                        fade = new Fade();
-                        timer = new Timer();
-                        convo = new Scene();
-                        scene.subscene = 0;
-                        spoken = false;
-                        nextScene();
-                    }
+                }
+                if(fade.fadedOut()) {
+                    fade = new Fade();
+                    timer = new Timer();
+                    convo = new Scene();
+                    scene.subscene = 0;
+                    spoken = false;
+                    nextScene();
                 }
             }
+
         }
     }
 
