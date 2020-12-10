@@ -6,11 +6,12 @@ let t; //general text obj
 let timer; //general timer 
 let handposeloaded = false;
 let sound;//genera sound obj
+let w
 function setup() {
     setupSpeech();
     //!
     setupHand();
-    getAudioContext().resume();
+    //getAudioContext().resume();
     createCanvas(800, 600);
     textAlign(LEFT);
     
@@ -42,8 +43,13 @@ function setup() {
     //scene.scene = 2
 //    scene.subscene = 0
 //    convo.subscene = 2
+    
+    w = createButton('Click here to activate mic');
+    w.mousePressed(doSomething);
 }
-
+function doSomething(){
+    print('thisran')
+}
 let move = false;
 let y = 0;
 let x = 0;
