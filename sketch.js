@@ -40,9 +40,9 @@ function setup() {
     sound = new Sound();
     
     //! to set scenes
-    //scene.scene = 2
-//    scene.subscene = 0
-//    convo.subscene = 2
+    scene.scene = 3
+    scene.subscene = 0
+    convo.subscene = 2
     
 //    w = createButton('activate mic');
 //    w.mousePressed(doSomething);
@@ -313,20 +313,21 @@ function doorGame() {
         if(convo.subscene == 6) {
             k9speak("\We found the bomb!", 4)
             bomb = true;
+            speak = true;
             if(timer.count(2000)) {
                 talk("Good job!!! That wasn't so\nhard, wasn't it?\nThink you're ready\nfor equipment training?", width*0.46, height*0.4, 200, 90, "r");
                 dialogueTrue(15, 15);
                 dialogueBox(255);
                 if(speak == true &&(response.includes("yes")||response.includes("no")||response.includes("maybe")||response.includes("okay")||response.includes("ok")||response.includes("alright") || response.includes("yep"))) {
-                    fade.fadeOut(20);
-                }
-                if(fade.fadedOut()) {
-                    fade = new Fade();
-                    timer = new Timer();
-                    convo = new Scene();
-                    scene.subscene = 0;
-                    spoken = false;
-                    nextScene();
+//                    fade.fadeOut(20);
+//                    if(fade.fadedOut()) {
+//                        
+                        fade = new Fade();
+                        timer = new Timer();
+                        convo = new Scene();
+                        scene.subscene = 0;
+                        nextScene();
+//                    }
                 }
             }
 
@@ -387,7 +388,7 @@ function trainingIntro(){
             if(timer.count(2000)) 
             talk("First, you'll need to take\nthis earpiece.\nStandard secure two-way \ncommunication.", width*0.4, height*0.4, 200, 90, "r")
             
-            if(timer.count(3000)) {
+            if(timer.count(2500)) {
                 showid = true;
                 pose = true;
                 push()
@@ -448,7 +449,7 @@ function trainingIntro(){
                 drawKeypoints();
                 checkGrab(width*0.50, height*0.63, 100, 100);
                 //timer is for debounce
-                if(grab && hit && timer.count(1300)) {
+                if(grab && hit && timer.count(800)) {
                     sound.playOnce(pickup)
                     dialogueTrue(0, 0);
                     dialogueBox(255);

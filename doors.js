@@ -26,13 +26,15 @@ function setupDoors() {
             if(r >= row - 1 && r <= row -1 || c >= col-2 && c <=col+2) {
                 r = int(random(0, 4))
                 c = int(random(0, 9))
-                done = false;
+            }
+            //see if not n
+            if(rooms[r][c].dir != "n" && rooms[r][c].door != null && rooms[r][c].dir != undefined) {
                 end = {
                     row: r,
                     col: c
                 }
-            }
-            else done = true
+                done = true;
+            } // otherwise run again
         }  
     }
 
@@ -116,7 +118,9 @@ function moveRight() {
 }
 let rooms =[
   [{dir:"rd", door:3, color:"w"}, {dir:"lrd", door:4, color:"y"}, {dir:"lrd", door:4, color:"w"}, {dir:"lrd", door:4, color:"g"}, {dir:"lrd", door:3, color:"y", sr: 2}, {dir:"n"}, {dir:"n"}, {dir:"lrd", door:3, color:"y", sl: 2}, {dir:"ld", door:2, color:"g"}],
-  [{dir:"ud", door:2, color:"g"}, {dir:"ud", door:2, color:"g"}, {dir:"ur", door:4, color:"w", sr: 2}, {dir:"ur", door:4, color:"w", sr: 1, sl:1}, {dir:"ur", door:4, color:"w",sl: 2}, {dir:"lr", door:2, color:"w"}, {dir:"ld", door:2, color:"g"}, {dir:"ur", door:2, color:"y"}, {dir:"lrd", door:3, color:"y"}],
-  [{dir:"udr", door:4, color:"y", sr:1}, {dir:"udr", door:4, color:"y", sl:1}, {dir:"lrd", door:3, color:"w"}, {dir:"lrd", door:3, color:"y"}, {dir:"ld", door:2, color:"g", sr:1}, {dir:"n"}, {dir:"ur", door:2, color:"y", sl:1}, {dir:"lrd", door:3, color:"w"}, {dir:"lud", door:3, color:"w"}],
+  [{dir:"ud", door:2, color:"g"}, {dir:"ud", door:2, color:"g"}, {dir:"ur", door:4, color:"w", sr: 2}, {dir:"ur", door:4, color:"w", sr: 1, sl:1}, {dir:"ur", door:4, color:"w",sl: 2}, {dir:"lr", door:2, color:"w"}, {dir:"ld", door:2, color:"g"}, {dir:"ur", door:2, color:"y"}, {dir:"lud", door:3, color:"y"}],
+  
+    [{dir:"udr", door:4, color:"y", sr:1}, {dir:"udr", door:4, color:"y", sl:1}, {dir:"lrd", door:3, color:"w"}, {dir:"lrd", door:3, color:"y"}, {dir:"ld", door:2, color:"g", sr:1}, {dir:"n"}, {dir:"ur", door:2, color:"y", sl:1}, {dir:"lrd", door:3, color:"w"}, {dir:"lud", door:3, color:"w"}],
+    
   [{dir:"ur", door:2, color:"w", sr:1}, {dir:"ur", door:2, color:"w", sl:1}, {dir:"lu", door:2, color:"g"}, {dir:"ru", door:2, color:"g"}, {dir:"lru", door:3, color:"y", sr:1}, {dir:"n"}, {dir:"lr", door:2, color:"w", sl: 1}, {dir:"lru", door:3, color:"y"}, {dir:"lu", door:2, color:"g"}]
 ]
