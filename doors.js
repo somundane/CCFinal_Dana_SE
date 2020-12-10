@@ -117,10 +117,10 @@ function moveRight() {
      cant = true;
 }
 let rooms =[
-  [{dir:"rd", door:3, color:"w"}, {dir:"lrd", door:4, color:"y"}, {dir:"lrd", door:4, color:"w"}, {dir:"lrd", door:4, color:"g"}, {dir:"lrd", door:3, color:"y", sr: 2}, {dir:"n"}, {dir:"n"}, {dir:"lrd", door:3, color:"y", sl: 2}, {dir:"ld", door:2, color:"g"}],
-  [{dir:"ud", door:2, color:"g"}, {dir:"ud", door:2, color:"g"}, {dir:"ur", door:4, color:"w", sr: 2}, {dir:"ur", door:4, color:"w", sr: 1, sl:1}, {dir:"ur", door:4, color:"w",sl: 2}, {dir:"lr", door:2, color:"w"}, {dir:"ld", door:2, color:"g"}, {dir:"ur", door:2, color:"y"}, {dir:"lud", door:3, color:"y"}],
+  [{dir:"rd", door:3, color:"w", id: "0"}, {dir:"lrd", door:4, color:"y", id: "1"}, {dir:"lrd", door:4, color:"w", id: "2"}, {dir:"lrd", door:4, color:"g", id: "3"}, {dir:"lrd", door:3, color:"y", sr: 2, id: "4"}, {dir:"n"}, {dir:"n"}, {dir:"lrd", door:3, color:"y", sl: 2, id: "5"}, {dir:"ld", door:2, color:"g", id: "6"}],
+  [{dir:"ud", door:2, color:"g", id: "7"}, {dir:"ud", door:2, color:"g", id: "8"}, {dir:"ur", door:4, color:"w", sr: 2, id: "9"}, {dir:"ur", door:4, color:"w", sr: 1, sl:1, id: "9"}, {dir:"ur", door:4, color:"w",sl: 2, id: "9"}, {dir:"lr", door:2, color:"w", id: "10"}, {dir:"ld", door:2, color:"g", id: "11"}, {dir:"ur", door:2, color:"y", id: "12"}, {dir:"lud", door:3, color:"y", id: "13"}],
   
-    [{dir:"udr", door:4, color:"y", sr:1}, {dir:"udr", door:4, color:"y", sl:1}, {dir:"lrd", door:3, color:"w"}, {dir:"lrd", door:3, color:"y"}, {dir:"ld", door:2, color:"g", sr:1}, {dir:"n"}, {dir:"ur", door:2, color:"y", sl:1}, {dir:"lrd", door:3, color:"w"}, {dir:"lud", door:3, color:"w"}],
+    [{dir:"udr", door:4, color:"y", sr:1, id: "14"}, {dir:"udr", door:4, color:"y", sl:1, id: "14"}, {dir:"lrd", door:3, color:"w", id: "15"}, {dir:"lrd", door:3, color:"y", id: "16"}, {dir:"ld", door:2, color:"g", sr:1, id: "17"}, {dir:"n"}, {dir:"ur", door:2, color:"y", sl:1, id: "18"}, {dir:"lrd", door:3, color:"w", id: "19"}, {dir:"lud", door:3, color:"w", id: "20"}],
     
-  [{dir:"ur", door:2, color:"w", sr:1}, {dir:"ur", door:2, color:"w", sl:1}, {dir:"lu", door:2, color:"g"}, {dir:"ru", door:2, color:"g"}, {dir:"lru", door:3, color:"y", sr:1}, {dir:"n"}, {dir:"lr", door:2, color:"w", sl: 1}, {dir:"lru", door:3, color:"y"}, {dir:"lu", door:2, color:"g"}]
+  [{dir:"ur", door:2, color:"w", sr:1, id: "21"}, {dir:"ur", door:2, color:"w", sl:1, id: "21"}, {dir:"lu", door:2, color:"g", id: "22"}, {dir:"ru", door:2, color:"g", id: "23"}, {dir:"lru", door:3, color:"y", sr:1, id: "24"}, {dir:"n"}, {dir:"lr", door:2, color:"w", sl: 1, id: "25"}, {dir:"lru", door:3, color:"y", id: "26"}, {dir:"lu", door:2, color:"g", id: "27"}]
 ]

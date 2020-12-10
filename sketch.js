@@ -40,9 +40,9 @@ function setup() {
     sound = new Sound();
     
     //! to set scenes
-//    scene.scene = 3
-//    scene.subscene = 0
-//    convo.subscene = 2
+    scene.scene = 3
+    scene.subscene = 1
+    convo.subscene = 2
     
 //    w = createButton('activate mic');
 //    w.mousePressed(doSomething);
@@ -156,6 +156,9 @@ function doorGame() {
       if(done == true) {
         print("Start: " + row + ", " + col)
         print("End: " + end.row + ", " + end.col)
+          //ID
+        print("Start ID: " + rooms[row][col].id)
+        print("End ID: " + rooms[end.row][end.col].id)
 
         if(row == end.row && col == end.col) {
           print("success")
@@ -200,7 +203,7 @@ function doorGame() {
             }
             }
         }
-        print(convo.subscene)
+        //print(convo.subscene)
         if(convo.subscene == 1) {
             talk("If you notice, the map\nshows you the room's colors\nand number of doors.", width*0.46, height*0.4, 200, 90, "r")
             if(timer.count(4000))
@@ -274,7 +277,7 @@ function doorGame() {
             }
         }
         if(convo.subscene == 5) {
-            if(row == end.row && col == end.col) {
+            if(rooms[row][col].id == rooms[end.row][end.col].id) {
               success = true;
                 timer = new Timer();
                 convo.subscene=6;
