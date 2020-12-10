@@ -10,6 +10,7 @@ function setup() {
     setupSpeech();
     //!
     setupHand();
+    getAudioContext().resume();
     createCanvas(800, 600);
     textAlign(LEFT);
     
