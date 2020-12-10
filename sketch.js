@@ -38,7 +38,7 @@ function setup() {
     sound = new Sound();
     
     //! to set scenes
-    scene.scene = 2
+    //scene.scene = 2
 //    scene.subscene = 0
 //    convo.subscene = 2
 }
@@ -275,26 +275,26 @@ function doorGame() {
                 if(cant == true) {
                     k9speak("It's not possible to do that!")
                 }
-                if(speak == true && (response.includes("up") ||response.includes("off")||response.includes("co-op"))) {
-                    if(response!="") k9speak.false()
+                if(speak == true && (response.includes("up") || response.includes("off")||response.includes("co-op"))) {
+                    if(response!="") k9sound.play = false
                     timer = new Timer();
                     response = "";
                     moveUp()
                 }
                 else if(speak == true && (response.includes("down")||response.includes("dan"))) {
-                    if(response!="") k9speak.false()
+                    if(response!="") k9sound.play = false
                     timer = new Timer();
                     response = "";
                     moveDown()
                 }
                 else if(speak == true && (response.includes("left"))) {
-                    if(response!="") k9speak.false()
+                    if(response!="") k9sound.play = false
                     timer = new Timer();
                     response = "";
                     moveLeft()
                 }
                 else if(speak == true && (response.includes("right") ||response.includes("wright"))) {
-                    if(response!="") k9speak.false()
+                    if(response!="")  k9sound.play = false
                     timer = new Timer();
                     response = "";
                     moveRight()
@@ -305,12 +305,12 @@ function doorGame() {
             k9speak("\We found the bomb!", 4)
             bomb = true;
             if(timer.count(2000)) {
-                talk("Good job!!! That wasn't so\nhard, wasn't it?\nNow take the rest of the\nday off and we'll continue\ntomorrow!", width*0.46, height*0.4, 200, 90, "r");
+                talk("Good job!!! That wasn't so\nhard, wasn't it?\nThink you're ready\nfor equipment training?", width*0.46, height*0.4, 200, 90, "r");
             }
-            if(timer.count(3000)) {
+            if(timer.count(2500)) {
                 dialogueTrue(15, 15);
                 dialogueBox(255);
-                if(speak == true &&(response.includes("okay")||response.includes("ok")||response.includes("alright") || response.includes("yep"))) {
+                if(speak == true &&(response.includes("yes")||response.includes("no")||response.includes("maybe")||response.includes("okay")||response.includes("ok")||response.includes("alright") || response.includes("yep"))) {
                     fade.fadeOut(20);
                     if(fade.fadedOut()) {
                         fade = new Fade();
@@ -507,7 +507,6 @@ function trainingIntro(){
             tint(255, fade.start)
             image(speaker, 90, height*0.86)
             pop();
-            print("Old: " + oldid)
             k9speak("Hi, " + user+"! Field Agent K-9 here.")
             if(timer.count(2000))
             k9speak("I will be your partner for your assessment today.")
@@ -745,7 +744,6 @@ function checkGrab(x, y, w, h) {
       for (let i = 0; i < predictions.length; i += 1) {
       const prediction = predictions[i];
           fill(255, 0, 0)
-    rect(x, y, w, h)
   poly[0] = createVector(width-prediction.landmarks[8][0], prediction.landmarks[8][1]);
   poly[1] = createVector(width-prediction.landmarks[5][0], prediction.landmarks[5][1]);
   poly[2] = createVector(width-prediction.landmarks[17][0], prediction.landmarks[17][1]);
