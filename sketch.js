@@ -65,6 +65,9 @@ function setup() {
             else 
                 scene.subscene = 0;
         }
+        else if (stored > 0)  {
+            welcome = true;
+        }
     }
     
 }
