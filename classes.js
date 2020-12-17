@@ -42,7 +42,6 @@ class Timer {
     constructor() {
         this.start = false;
         this.time = 0;
-        
     }
     count(ms) {
         if(this.start == false) {
@@ -150,3 +149,71 @@ class Sound {
         } 
     }
 }
+
+
+///////////////SCENE 1//////////////////////////////
+
+let grab = false;
+let poly = [];
+let hit;
+function checkGrab(x, y, w, h) {
+      for (let i = 0; i < predictions.length; i += 1) {
+      const prediction = predictions[i];
+          fill(255, 0, 0)
+  poly[0] = createVector(width-prediction.landmarks[8][0], prediction.landmarks[8][1]);
+  poly[1] = createVector(width-prediction.landmarks[5][0], prediction.landmarks[5][1]);
+  poly[2] = createVector(width-prediction.landmarks[17][0], prediction.landmarks[17][1]);
+  poly[3] = createVector(width-prediction.landmarks[20][0], prediction.landmarks[20][1]);
+  hit = collideRectPoly(x, y, w, h, poly);
+    if(prediction.landmarks[8][1] > prediction.landmarks[5][1]) {
+      grab = true;
+    }
+    else {
+      grab = false;
+    }
+  }
+}
+
+function drawKeypoints() {
+  for (let i = 0; i < predictions.length; i += 1) {
+    const prediction = predictions[i];
+    for (let j = 4; j < prediction.landmarks.length; j += 4) {
+      const keypoint = prediction.landmarks[j];
+      fill(200, 150, 150);
+      noStroke();
+      let x = map(keypoint[0], 0, capture.width, 0, 800)
+      let y = map(keypoint[1], 0, capture.height, 0, 600)
+      ellipse(width-x, y, 14);
+    }
+  } 
+  for (let p = 0; p < predictions.length; p += 1) {
+    const prediction2 = predictions[p];
+    for (let q = 5; q < prediction2.landmarks.length; q += 4) {
+      const keypoint2 = prediction2.landmarks[q];
+      fill(150, 150, 200);
+      noStroke();
+      let x = map(keypoint2[0], 0, capture.width, 0, 800)
+      let y = map(keypoint2[1], 0, capture.height, 0, 600)
+      ellipse(width-x, y, 7);
+    }
+  }
+//   predictions = [];
+}
+
+///////////////SCENE 2//////////////////////////////
+
+let k9sound = new Sound();
+function k9speak(str, id) {
+    k9sound.playOnce(radio)
+    fill(0)
+        rect(160, height*0.86, width, 50)
+        push()
+        fill(255)
+        textSize(20)
+        textAlign(LEFT);
+        textFont('Poppins');
+        text(str, 170, height*0.92)
+    pop()
+}
+
+///////////////SCENE 3//////////////////////////////

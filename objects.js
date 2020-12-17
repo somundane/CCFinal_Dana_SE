@@ -2,7 +2,7 @@
 let dText = [
     "","> Where am I?", "Please process your arrival data by scanning the code. \n\nWe will be opening doors shortly.",
              
-"> Where can I get a ride?", "> Cab/Taxi\n\n> Train", "> Cabs, then.", "> Thank you!",
+"> Where can I get a ride?", "> Cab/Taxi\n\n> Train", "> Cabs it is, then.", "> Thank you!",
             
 "> . . .Sorry\n\n> Who are you?","> So who are you again?", "> Training. . .?", "> Let's do this!", "> Okay"];
 let dialogue = [];
@@ -56,7 +56,7 @@ function dialogueTrue(start, end) {
 }
 
 let info = [
-    "Whenever the speech symbol is\nactive, you can advance through \nscenes by using speech commands.\nSome of these interactions will be \nguided, like this one!\n\nSay the phrase to try it out!\n(Minimize background noise!)",
+    "Whenever the speech symbol is\nactive, you can advance through \nscenes by using speech commands.\nSome of these interactions will be \nguided, like this one!\n\nMinimize background noise then\nsay the phrase to try it out!",
     "Whenever the hand symbol is\nactive, you can use your hands \nto interact with a scene.\n\nBring your hand up to the \ncamera to try it out!\n(Detection can take a few seconds)",
     "Whenever you see a speech \nbubble, there is an opportunity\nfor conversation.\n\nSay hello to start it!",
     "The speaker indicates sound\ncoming from the other end.\n\nIn this case, it will be input\nfrom Agent K-9.\n\nSay something for Agent K-9 to hear!"
@@ -130,11 +130,12 @@ function infoBox(info, t, x, y, w, h, r, pos, p, fade, bg) {
 }
 
 let canspeak = false, canpose = false;
+//let notified = false;
 function activateIcon(icon, fade) {
     if(icon == "speech") {
         push()
         scale(0.40);
-        tint(250, fade)
+        tint(77, 199, 69, fade)
         image(mic, 40, 940);
         pop();
         canspeak = true;
@@ -142,14 +143,34 @@ function activateIcon(icon, fade) {
     if(icon == "hand") {
         push()
         scale(0.40);
-        tint(250, fade)
+        tint(77, 199, 69, fade)
         image(hand, 40, 1050);
         pop();
         canpose = true
         
     }
+
+    if(fade >= 250) sound1.playOnce(notif);
+    else sound1.play = false
+
 }
+
+let talkdone = false;
+let oldstr;
 function talk(str, x, y, w, h, lr) {
+    print(str)
+    if(oldstr != str && !whisper.isPlaying()) {
+        talktimer = new Timer();
+        whisper.loop();
+        print("DIFF")
+    }
+    else if(oldstr == str){
+        if(talktimer.count(800)) {
+            whisper.pause();
+        }
+    }
+    print(oldstr)
+    oldstr = str;
     fill(255)
     noStroke();
     rect(x, y, w, h, 10)

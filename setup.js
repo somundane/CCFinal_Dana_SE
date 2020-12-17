@@ -7,7 +7,7 @@ let taxi, id, glare, facility, blueprint, device, range, darts, bottles, speaker
 let gif;
 let lizard;
 //Sounds
-let landing, ding, taxibg, pickup, radio, help;
+let landing, ding, taxibg, pickup, radio, help, notif, whisper;
 let hasplayed = false;
 
 function preload() {
@@ -48,15 +48,20 @@ function preload() {
     lizard = loadImage('visuals/characters/lizard.png');
     
     landing = loadSound('sounds/landing.wav');
-    landing.setVolume(0.55)
+    landing.setVolume(0.04)
 
     taxibg = loadSound('sounds/taxibg.mp3');
-    taxibg.setVolume(0.48)
+    taxibg.setVolume(0.10)
     
     radio = loadSound('sounds/radio.wav');
     ding = loadSound('sounds/ding.wav');
+    notif = loadSound('sounds/notif.wav');
+    notif.setVolume(0.05)
     pickup = loadSound('sounds/pickup.wav');
     help = loadSound('sounds/help.wav');
+    help.setVolume(0.30)
+    whisper = loadSound('sounds/whisper.mp3');
+    whisper.setVolume(2.5)
     
 }
 
