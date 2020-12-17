@@ -152,6 +152,7 @@ function welcomeBack() {
     fill(255)
     textAlign(CENTER);
     let storedname = localStorage.getItem('name');
+    user = storedname;
       // If the old count exists, parse it!
     if (storedname) {
         push()
