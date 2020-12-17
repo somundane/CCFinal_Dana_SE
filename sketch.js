@@ -10,6 +10,7 @@ let sound;//genera sound obj
 let sound1; //another one to avoid overlap
 let w;
 function setup() {
+    localStorage.clear();
     setupSpeech();
     //!
     setupHand();
