@@ -10,7 +10,6 @@ let sound;//genera sound obj
 let sound1; //another one to avoid overlap
 let w;
 function setup() {
-    localStorage.clear();
     setupSpeech();
     //!
     setupHand();
@@ -128,15 +127,15 @@ function draw() {
     }
     //!
     if (handposeModel && videoDataLoaded && poseinit == true){
-        if(scene.scene == 0) 
+        if(scene.scene == 0 && welcome == false) 
             sceneIntro();
-        if(scene.scene == 1)
+        if(scene.scene == 1 && welcome == false)
             taxiScene();
-        if(scene.scene == 2)
+        if(scene.scene == 2 && welcome == false)
             trainingIntro();
-        if(scene.scene == 3)
+        if(scene.scene == 3 && welcome == false)
             doorGame();
-        if(scene.scene == 4)
+        if(scene.scene == 4 && welcome == false)
             equipmentTraining();
         if(welcome == true)
             welcomeBack()
