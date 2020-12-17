@@ -59,10 +59,12 @@ function setup() {
     if (stored) {
         scene.scene = parseFloat(stored);
         scene.subscene = parseFloat(substored);
-        if(substored >= 2)
-            welcome = true;
-        else
-            scene.subscene = 0;
+        if(stored == 0) {
+            if(substored >= 2)
+                welcome = true;
+            else 
+                scene.subscene = 0;
+        }
     }
     
 }
