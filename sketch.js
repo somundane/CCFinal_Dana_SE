@@ -205,6 +205,19 @@ function mousePressed() {
     }
 }
 
+let mute = false;
+function keyPressed() {
+  if (keyCode === 77 && mute ==true) {
+    masterVolume(1.0)
+    print('hit')
+    mute=false;
+  }
+  else if (keyCode === 77 && mute == false) {
+    masterVolume(0.0)
+    mute = true;
+  }
+}
+
 
 
 
